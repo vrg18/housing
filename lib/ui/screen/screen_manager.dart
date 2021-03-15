@@ -28,6 +28,7 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
   @override
   void dispose() {
     _tabController.dispose();
+    _loginController = TextEditingController();
     super.dispose();
   }
 
@@ -39,7 +40,7 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
         physics: NeverScrollableScrollPhysics(),
         children: [
           LoginScreen(_tabController.index, LoginFirst(_tabController, _loginController, key: _firstKey)),
-          LoginScreen(_tabController.index, LoginSecond(_tabController, _loginController.text, key: _secondKey)),
+          LoginScreen(_tabController.index, LoginSecond(_tabController, key: _secondKey)),
         ],
       ),
     );

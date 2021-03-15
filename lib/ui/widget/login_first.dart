@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:housing/data/repository/phone_number.dart';
+import 'package:housing/data/provider/phone_number.dart';
+import 'package:housing/data/repository/phone_number_formatter.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
+import 'package:provider/provider.dart';
 
 class LoginFirst extends StatefulWidget {
   final TabController _tabController;
@@ -71,6 +73,7 @@ class _LoginFirstState extends State<LoginFirst> {
 
   void _gotoNextScreen() {
     FocusScope.of(context).requestFocus(new FocusNode());
+    context.read<PhoneNumber>().phoneNumber = widget._loginController.text;
     widget._tabController.index = 1;
   }
 }

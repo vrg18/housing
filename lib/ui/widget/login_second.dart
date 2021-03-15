@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:housing/data/provider/is_web.dart';
+import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/magnitudes.dart';
 import 'package:housing/ui/res/sizes.dart';
@@ -14,9 +15,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LoginSecond extends StatefulWidget {
   final TabController _tabController;
-  final String _phoneNumber;
 
-  LoginSecond(this._tabController, this._phoneNumber, {required Key key}) : super(key: key);
+  LoginSecond(this._tabController, {required Key key}) : super(key: key);
 
   @override
   _LoginSecondState createState() => _LoginSecondState();
@@ -47,7 +47,7 @@ class _LoginSecondState extends State<LoginSecond> {
     return Column(
       children: [
         Text(
-          inscriptionEnterPassword + widget._phoneNumber,
+          inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
           textAlign: TextAlign.center,
 //          style: inputInAccountStyle,
         ),

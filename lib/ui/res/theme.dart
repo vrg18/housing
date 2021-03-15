@@ -14,10 +14,10 @@ final mainTheme = ThemeData(
     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: basicBlue)),
   ),
   textButtonTheme: TextButtonThemeData(
-    style: ButtonStyle(
-      minimumSize: MaterialStateProperty.resolveWith<Size>((states) => Size.fromHeight(heightOfButtonsAndTextFields)),
-      backgroundColor: MaterialStateProperty.resolveWith<Color>((states) => basicBlue),
-      foregroundColor: MaterialStateProperty.resolveWith<Color>((states) => Colors.white),
+    style: TextButton.styleFrom(
+      primary: Colors.white,
+      backgroundColor: basicBlue,
+      minimumSize: Size.fromHeight(heightOfButtonsAndTextFields),
     ),
   ),
 );

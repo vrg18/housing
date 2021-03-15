@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/theme.dart';
-import 'package:housing/ui/screen/login.dart';
+import 'package:housing/ui/screen/screen_manager.dart';
 import 'package:housing/ui/screen/web_wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +18,6 @@ class App extends StatelessWidget {
             locale: Locale('ru', 'RU'),
             title: appTitle,
             theme: mainTheme,
-            builder: (context, _) => context.read<Web>().isWeb
-                ? WebWrapper(LoginScreen())
-                : LoginScreen()),
+            builder: (context, _) => context.read<Web>().isWeb ? WebWrapper(ScreenManager()) : ScreenManager()),
       );
 }

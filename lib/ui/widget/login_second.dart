@@ -10,13 +10,15 @@ import 'package:housing/ui/res/magnitudes.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
+import 'package:housing/ui/widget/timer_format_template.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// Основной содержимое второго логин-экрана
 class LoginSecond extends StatefulWidget {
-  final TabController _tabController;
+  final TabController tabController;
 
-  LoginSecond(this._tabController, {required Key key}) : super(key: key);
+  const LoginSecond(this.tabController, {required Key key}) : super(key: key);
 
   @override
   _LoginSecondState createState() => _LoginSecondState();
@@ -60,7 +62,7 @@ class _LoginSecondState extends State<LoginSecond> {
               style: rightSmallerWhiteButtonStyle,
               onPressed: () {
                 FocusScope.of(context).requestFocus(new FocusNode());
-                widget._tabController.index = 0;
+                widget.tabController.index = 0;
               },
             ),
           ),
@@ -101,10 +103,7 @@ class _LoginSecondState extends State<LoginSecond> {
                 child: Center(
                   child: CountdownTimer(
                     controller: _timerController,
-                    widgetBuilder: (_, time) => Text(
-                      '${time!.min == null ? '0' : time.min}:${time.sec.toString().padLeft(2, '0')}',
-                      style: basicBlueColorText,
-                    ),
+                    widgetBuilder: (_, time) => TimerFormatTemplate(time!),
                   ),
                 ),
               )

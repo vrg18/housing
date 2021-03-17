@@ -6,15 +6,16 @@ import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
 import 'package:provider/provider.dart';
 
+/// Неизменные "шапка" и "подвал" двух логин-экранов
 class LoginScreen extends StatelessWidget {
-  final int _screenNumber;
-  final Widget _nestedWidget;
+  final int screenNumber;
+  final Widget nestedWidget;
 
-  LoginScreen(this._screenNumber, this._nestedWidget);
+  const LoginScreen(this.screenNumber, this.nestedWidget);
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+    final double height = MediaQuery.of(context).size.height;
 
     return KeyboardDismissOnTap(
       child: Scaffold(
@@ -25,22 +26,26 @@ class LoginScreen extends StatelessWidget {
                 ? SingleChildScrollView(
                     child: _bodyLoginScreen(context),
                   )
-                : _screenNumber == 0 && height < contentHeightLoginFirst ||
-                        _screenNumber == 1 && height < contentHeightLoginSecond
-                    ? SingleChildScrollView(
-                        child: _bodyLoginScreen(context),
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [_bodyLoginScreen(context)],
-                      ),
+                : _checkForLowScreens(context, height),
           ),
         ),
       ),
     );
   }
 
-  Column _bodyLoginScreen(BuildContext context) {
+  Widget _checkForLowScreens(BuildContext context, double height) {
+    return screenNumber == 0 && height < contentHeightLoginFirst ||
+            screenNumber == 1 && height < contentHeightLoginSecond
+        ? SingleChildScrollView(
+            child: _bodyLoginScreen(context),
+          )
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [_bodyLoginScreen(context)],
+          );
+  }
+
+  Widget _bodyLoginScreen(BuildContext context) {
     return Column(
       children: [
         SizedBox(
@@ -56,7 +61,7 @@ class LoginScreen extends StatelessWidget {
           style: inputInAccountStyle,
         ),
         const SizedBox(height: 40),
-        _nestedWidget,
+        nestedWidget,
         Divider(
           color: context.read<Web>().isWeb ? null : Colors.black,
         ),

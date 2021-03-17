@@ -8,11 +8,12 @@ import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
 import 'package:provider/provider.dart';
 
+/// Основной содержимое первого логин-экрана
 class LoginFirst extends StatefulWidget {
-  final TabController _tabController;
-  final TextEditingController _loginController;
+  final TabController tabController;
+  final TextEditingController loginController;
 
-  LoginFirst(this._tabController, this._loginController, {required Key key}) : super(key: key);
+  const LoginFirst(this.tabController, this.loginController, {required Key key}) : super(key: key);
 
   @override
   _LoginFirstState createState() => _LoginFirstState();
@@ -26,7 +27,7 @@ class _LoginFirstState extends State<LoginFirst> {
   void initState() {
     super.initState();
     _phoneNumberFormatter = PhoneNumberInputFormatter();
-    _isActiveButton = widget._loginController.text.length >= 12;
+    _isActiveButton = widget.loginController.text.length >= 12;
   }
 
   @override
@@ -36,7 +37,7 @@ class _LoginFirstState extends State<LoginFirst> {
         SizedBox(
           height: heightOfButtonsAndTextFields,
           child: TextField(
-            controller: widget._loginController,
+            controller: widget.loginController,
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
@@ -73,7 +74,7 @@ class _LoginFirstState extends State<LoginFirst> {
 
   void _gotoNextScreen() {
     FocusScope.of(context).requestFocus(new FocusNode());
-    context.read<PhoneNumber>().phoneNumber = widget._loginController.text;
-    widget._tabController.index = 1;
+    context.read<PhoneNumber>().phoneNumber = widget.loginController.text;
+    widget.tabController.index = 1;
   }
 }

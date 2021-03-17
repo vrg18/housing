@@ -4,9 +4,9 @@ import 'package:housing/ui/res/sizes.dart';
 
 /// Обертка для Web-экранов, своеобразный "закос" под телефон для Web
 class WebWrapper extends StatelessWidget {
-  final Widget _child;
+  final Widget child;
 
-  WebWrapper(this._child);
+  const WebWrapper(this.child);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class WebWrapper extends StatelessWidget {
                   maxHeight: heightWebWrapper,
                 ),
                 //color: primaryBackgroundColor,
-                child: _child,
+                child: child,
               ),
             ),
           ),

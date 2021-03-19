@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/ui/res/colors.dart';
-
-import 'sizes.dart';
+import 'package:housing/ui/res/sizes.dart';
 
 /// Тема приложения
 

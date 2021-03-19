@@ -17,5 +17,8 @@ const String userAgreementUrl = 'https://ya.ru';
 const String inscriptionAnd = '\nи ';
 const String inscriptionPersonalDataPolicy = 'Политикой обработки персональных данных';
 const String personalDataPolicyUrl = 'https://ya.ru';
+const String popupHeader = 'Предупреждение';
+const String tooltipCounters = 'Счетчики';
+const String tooltipRequests = 'Заявки';
 
 const String logoPicture = 'lib/ui/res/logo_400x280.png';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/ui/screen/bottom_bar_manager.dart';
 import 'package:housing/ui/widget/login.dart';
 import 'package:housing/ui/widget/login_first.dart';
 import 'package:housing/ui/widget/login_second.dart';
@@ -18,17 +19,16 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(() => setState(() {}));
     _firstKey = GlobalKey();
     _secondKey = GlobalKey();
-    _loginController = TextEditingController();
+    _loginController = TextEditingController(); //text: '+79053490432');
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    _loginController = TextEditingController();
     super.dispose();
   }
 
@@ -41,6 +41,7 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
         children: [
           LoginScreen(_tabController.index, LoginFirst(_tabController, _loginController, key: _firstKey)),
           LoginScreen(_tabController.index, LoginSecond(_tabController, key: _secondKey)),
+          BottomBarManager(_tabController, _loginController),
         ],
       ),
     );

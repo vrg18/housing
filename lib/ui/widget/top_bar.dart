@@ -25,12 +25,26 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.person),
-            Text(phone),
-            Spacer(),
             SizedBox(
-              width: appBarHeight,
               height: appBarHeight,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Material(
+                  child: InkWell(
+                    child: Row(
+                      children: [
+                        Icon(Icons.person),
+                        Text(phone),
+                      ],
+                    ),
+                    onTap: () => {},
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: appBarHeight,
+              width: appBarHeight,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Material(

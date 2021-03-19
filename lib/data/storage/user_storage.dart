@@ -37,7 +37,7 @@ class UserStorage {
   }
 
   dynamic _authContinueOk(String phone, response, bool isAuth) {
-//    print('Ответ: ${response.statusCode}/${response.statusMessage}, Содержимое: ${response.data}');
+    print('Ответ: ${response.statusCode}/${response.statusMessage}, Содержимое: ${response.data}');
     if (response.statusCode < 300) {
       if (isAuth) {
         return User(
@@ -54,7 +54,9 @@ class UserStorage {
   }
 
   String _continueException(DioError error) {
+    print('Ошибка: ${error.error}');
     if (error.response != null) {
+      print('Ответ: ${error.response}');
       return error.response.toString();
     } else {
       return error.error;

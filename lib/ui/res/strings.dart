@@ -20,5 +20,9 @@ const String personalDataPolicyUrl = 'https://ya.ru';
 const String popupHeader = 'Предупреждение';
 const String tooltipCounters = 'Счетчики';
 const String tooltipRequests = 'Заявки';
+const String supplyCountersLabel = 'Подать показания';
+const String historyCountersLabel = 'История показаний';
+const String createRequestsLabel = 'Создать заявку';
+const String historyRequestsLabel = 'История заявок';
 
 const String logoPicture = 'lib/ui/res/logo_400x280.png';

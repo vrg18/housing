@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/strings.dart';
-import 'package:housing/ui/screen/counters.dart';
-import 'package:housing/ui/screen/requests.dart';
+import 'package:housing/ui/screen/counters_manager.dart';
+import 'package:housing/ui/screen/requests_manager.dart';
 import 'package:housing/ui/widget/top_bar.dart';
 import 'package:provider/provider.dart';
 
+/// Основное нижнее меню
 class BottomBarManager extends StatefulWidget {
   final TabController tabController;
   final TextEditingController loginController;
@@ -20,8 +21,8 @@ class BottomBarManager extends StatefulWidget {
 class _BottomBarManagerState extends State<BottomBarManager> {
   int _selectedPage = 0;
   final List<Widget> _pages = [
-    Counters(),
-    Requests(),
+    CountersManager(),
+    RequestsManager(),
   ];
 
   @override
@@ -40,13 +41,14 @@ class _BottomBarManagerState extends State<BottomBarManager> {
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         fixedColor: basicBlue,
+        unselectedItemColor: unselectedBarColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.network_check),
             label: tooltipCounters,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.format_paint),
+            icon: Icon(Icons.build),
             label: tooltipRequests,
           ),
         ],
@@ -56,9 +58,7 @@ class _BottomBarManagerState extends State<BottomBarManager> {
 
   /// Метод переключает страницы BottomNavigationBar
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedPage = index;
-    });
+    setState(() => _selectedPage = index);
   }
 
   /// Возврат на страницу логина

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:housing/ui/res/colors.dart';
+import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 
 /// Виджет кастомного верхнего бара, альтернатива AppBar
@@ -30,6 +31,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Material(
+                  color: Colors.transparent,
                   child: InkWell(
                     child: Row(
                       children: [
@@ -48,8 +50,12 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Material(
+                  color: Colors.transparent,
                   child: InkWell(
-                    child: Icon(Icons.exit_to_app),
+                    child: Icon(
+                      logoutIcon,
+                      size: 16,
+                    ),
                     onTap: () => callback(),
                   ),
                 ),

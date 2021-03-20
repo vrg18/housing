@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:housing/data/provider/current_user.dart';
+import 'package:housing/data/provider/current_client.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/properties.dart';
@@ -203,7 +203,7 @@ class _LoginSecondState extends State<LoginSecond> {
       _isIntroduced = false;
       _isAgrees = false;
     });
-    String error = await context.read<CurrentUser>().pinCodeRequest(context.read<PhoneNumber>().phoneNumber);
+    String error = await context.read<CurrentClient>().pinCodeRequest(context.read<PhoneNumber>().phoneNumber);
     if (error.isNotEmpty) {
       setState(() => _isLoadingPinCode = false);
       popupMessage(context, error);
@@ -221,7 +221,7 @@ class _LoginSecondState extends State<LoginSecond> {
   Future<void> _gotoNextScreen() async {
     setState(() => _isLoadingLogin = true);
     FocusScope.of(context).requestFocus(new FocusNode());
-    String error = await context.read<CurrentUser>().authentication(
+    String error = await context.read<CurrentClient>().authentication(
           context.read<PhoneNumber>().phoneNumber,
           _passwordController.text,
         );

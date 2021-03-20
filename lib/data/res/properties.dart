@@ -5,6 +5,4 @@ const String baseUrl = 'http://dev.brain4you.ru';
 const String apiAuthMobile = '/api/v1/auth/mobile';
 const String apiAuthCustomToken = '/api/v1/auth/customtoken';
 
-const String demoUserPhoneNumber = '+79999999999';
-
 const int countdownTimerRepeatedPassword = 61 * 1000; // 61 секунда

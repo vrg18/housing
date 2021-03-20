@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:housing/data/res/properties.dart';
-import 'package:housing/domain/user.dart';
+import 'package:housing/domain/client.dart';
 
-class UserStorage {
+class ClientStorage {
   final Dio _dioAuth = Dio(
     BaseOptions(
       baseUrl: baseUrl,
@@ -40,10 +40,10 @@ class UserStorage {
     print('Ответ: ${response.statusCode}/${response.statusMessage}, Содержимое: ${response.data}');
     if (response.statusCode < 300) {
       if (isAuth) {
-        return User(
-          phone,
-          response.data['access'],
-          false,
+        return Client(
+          phone: phone,
+          token: response.data['access'],
+          isDemo: false,
         );
       } else {
         return '';

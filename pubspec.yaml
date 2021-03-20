@@ -26,5 +26,10 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lib/ui/res/logo_200x140.png
-    - lib/ui/res/logo_400x280.png
+    - res/logo_200x140.png
+    - res/logo_400x280.png
+
+  fonts:
+    - family: MyIcons
+      fonts:
+        - asset: res/MyIcons.ttf

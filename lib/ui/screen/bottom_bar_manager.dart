@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/provider/phone_number.dart';
+import 'package:housing/data/provider/current_client.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/screen/counters_manager.dart';
@@ -29,7 +29,7 @@ class _BottomBarManagerState extends State<BottomBarManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        context.read<PhoneNumber>().phoneNumber,
+        context.read<CurrentClient>().client.phone,
         _returnToLogin,
       ),
       body: IndexedStack(

@@ -9,6 +9,8 @@ container:
 build_task:
   build_script:
     - flutter config --enable-web
+    - flutter pub get
+    - flutter pub upgrade
     - flutter pub run build_runner build
     - flutter build web --release --no-sound-null-safety
   binaries_artifacts:

@@ -2,10 +2,9 @@ import 'package:housing/data/res/mocks.dart';
 import 'package:housing/data/storage/client_storage.dart';
 import 'package:housing/domain/client.dart';
 
-/// Бизнес-логика сущности Пользователь
-/// Используется Provider
-class CurrentClient {
-  late ClientStorage _clientStorage = ClientStorage();
+/// Бизнес-логика сущности Клиент
+class ClientRepository {
+  ClientStorage _clientStorage = ClientStorage();
   late Client _client;
 
   get client => _client;
@@ -18,7 +17,7 @@ class CurrentClient {
     dynamic returned = await _clientStorage.authentication(phone, password);
     if (returned is Client) {
       _client = returned;
-      returned = '';
+      return '';
     }
     return returned;
   }

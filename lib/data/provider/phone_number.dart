@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 
 /// Класс, хранящий номер телефона пользователя
 /// Используется Provider

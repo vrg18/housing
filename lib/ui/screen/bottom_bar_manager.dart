@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/provider/current_client.dart';
+import 'package:housing/data/repository/client_repository.dart';
+import 'package:housing/data/repository/counter_repository.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/screen/counters_manager.dart';
@@ -27,31 +28,36 @@ class _BottomBarManagerState extends State<BottomBarManager> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: TopBar(
-        context.read<CurrentClient>().client.phone,
-        _returnToLogin,
-      ),
-      body: IndexedStack(
-        index: _selectedPage,
-        children: _pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedPage,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        fixedColor: basicBlue,
-        unselectedItemColor: unselectedBarColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.network_check),
-            label: tooltipCounters,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.build),
-            label: tooltipRequests,
-          ),
-        ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CounterRepository>(create: (_) => CounterRepository(context.read<ClientRepository>().client)),
+      ],
+      child: Scaffold(
+        appBar: TopBar(
+          context.read<ClientRepository>().client.phone,
+          _returnToLogin,
+        ),
+        body: IndexedStack(
+          index: _selectedPage,
+          children: _pages,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedPage,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          fixedColor: basicBlue,
+          unselectedItemColor: unselectedBarColor,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.network_check),
+              label: tooltipCounters,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.build),
+              label: tooltipRequests,
+            ),
+          ],
+        ),
       ),
     );
   }

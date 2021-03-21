@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/res/mocks.dart';
+import 'package:housing/data/repository/counter_repository.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/widget/counter_card.dart';
+import 'package:provider/provider.dart';
 
 /// Страница подачи показаний счетчиков
 class CountersSupply extends StatelessWidget {
@@ -13,8 +14,8 @@ class CountersSupply extends StatelessWidget {
         maxCrossAxisExtent: wideScreenSizeOver / 2,
         crossAxisSpacing: basicBorderSize,
         mainAxisSpacing: basicBorderSize,
-        childAspectRatio: 3,
-        children: demoIndications.keys.toList().map((e) => CounterCard(e)).toList(),
+        childAspectRatio: 2,
+        children: context.read<CounterRepository>().counters.asMap().values.map((e) => CounterCard(e)).toList(),
       ),
     );
   }

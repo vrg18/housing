@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:housing/data/repository/counter_repository.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
 import 'package:housing/ui/screen/counters_history.dart';
 import 'package:housing/ui/screen/counters_supply.dart';
+import 'package:housing/ui/widget/popup_message.dart';
+import 'package:housing/ui/widget/progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 /// Верхнее бар-меню показаний счетчиков
 class CountersManager extends StatefulWidget {
@@ -46,13 +50,32 @@ class _CountersManagerState extends State<CountersManager> with SingleTickerProv
           ),
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          CountersSupply(),
-          CountersHistory(),
-        ],
+      body: Builder(
+        builder: (BuildContext context) {
+          if (!context.read<CounterRepository>().isAllLoaded) {
+            _weReceiveCounters();
+          }
+
+          return context.watch<CounterRepository>().isAllLoaded
+              ? TabBarView(
+                  controller: _tabController,
+                  children: [
+                    CountersSupply(),
+                    CountersHistory(),
+                  ],
+                )
+              : LoginProgressIndicator(basicBlue);
+        },
       ),
+      floatingActionButton: SizedBox.shrink(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
+  }
+
+  Future<void> _weReceiveCounters() async {
+    String error = await context.read<CounterRepository>().getCounters();
+    if (error.isNotEmpty) {
+      popupMessage(context, error);
+    }
   }
 }

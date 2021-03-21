@@ -1,21 +1,31 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:housing/domain/address.dart';
-import 'package:housing/domain/type_of_counter.dart';
-import 'package:housing/domain/client.dart';
 
-/// Конкретный счетчика
+import 'counter_type.dart';
+part 'counter.g.dart';
+
+/// Конкретный счетчик
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Counter {
-  final String _name;
-  final TypeOfCounter _type;
-  final Client _client;
-  final Address _address;
+  final int? id;
+  final String title;
+  @JsonKey(name: 'meters_type')
+  final int type;
+  final previousValue;
+  final Address address;
+  @JsonKey(ignore: true)
+  CounterType? counterType;
 
-  Counter(this._name, this._type, this._client, this._address);
+  Counter({
+    this.id,
+    required this.title,
+    required this.type,
+    required this.previousValue,
+    required this.address,
+    this.counterType,
+  });
 
-  get name => _name;
+  factory Counter.fromJson(Map<String, dynamic> json) => _$CounterFromJson(json);
 
-  get type => _type;
-
-  get client => _client;
-
-  get address => _address;
+  Map<String, dynamic> toJson() => _$CounterToJson(this);
 }

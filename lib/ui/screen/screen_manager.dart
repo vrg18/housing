@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:housing/data/res/mocks.dart';
 import 'package:housing/ui/screen/bottom_bar_manager.dart';
 import 'package:housing/ui/widget/login.dart';
 import 'package:housing/ui/widget/login_first.dart';
@@ -23,7 +24,7 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
     _tabController.addListener(() => setState(() {}));
     _firstKey = GlobalKey();
     _secondKey = GlobalKey();
-    _loginController = TextEditingController(); //text: '+79053490432');
+    _loginController = TextEditingController(text: testPhone);
   }
 
   @override

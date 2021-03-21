@@ -1,82 +1,103 @@
-import 'package:flutter/material.dart';
 import 'package:housing/domain/address.dart';
-import 'package:housing/domain/counter.dart';
-import 'package:housing/domain/indication.dart';
-import 'package:housing/domain/type_of_counter.dart';
 import 'package:housing/domain/client.dart';
-import 'package:housing/ui/res/colors.dart';
-import 'package:housing/ui/res/icons.dart';
+import 'package:housing/domain/counter.dart';
+import 'package:housing/domain/counter_type.dart';
 
 /// Моковые данные для демо-режима
 
-// Пользователь
+// Тестовый телефон
+//final String testPhone = '+79626320003';
+final String testPhone = '';
+
+// Демо-клиент
 final Client demoClient = Client(
   phone: '+79999999999',
   isDemo: true,
 );
 
 // Типы счетчиков
-final TypeOfCounter coldWater = TypeOfCounter(
-  'Холодная вода',
-  waterIcon,
-  basicBlue,
-  'м³',
-);
-final TypeOfCounter hotWater = TypeOfCounter(
-  'Горячая вода',
-  waterIcon,
-  Colors.red,
-  'м³',
-);
-final TypeOfCounter gas = TypeOfCounter(
-  'Газ',
-  gasIcon,
-  Colors.lightBlueAccent,
-  'м³',
-);
+List<CounterType> demoTypes = [
+  CounterType(
+    id: 0,
+    title: 'Холодная вода',
+    // icon: waterIcon,
+    // color: basicBlue,
+    // unit: 'м³',
+  ),
+  CounterType(
+    id: 1,
+    title: 'Горячая вода',
+    // icon: waterIcon,
+    // color: Colors.red,
+    // unit: 'м³',
+  ),
+  CounterType(
+    id: 2,
+    title: 'Газ',
+    // icon: gasIcon,
+    // color: Colors.lightBlueAccent,
+    // unit: 'м³',
+  ),
+  CounterType(
+    id: 3,
+    title: 'Электросчетчик',
+    // icon: electricityIcon,
+    // color: Colors.black,
+    // unit: 'kW·h',
+  ),
+];
 
 // Адреса
 final Address addressLenin = Address(
+  id: 0,
   street: 'Ленина',
   house: '17А',
   apartment: '73',
 );
 
 // Счетчики
-final Counter coldWaterLenin = Counter(
-  'Холодная вода на Ленина 17А-73',
-  coldWater,
-  demoClient,
-  addressLenin,
-);
-final Counter hotWaterLenin = Counter(
-  'Горячая вода на Ленина 17А-73',
-  hotWater,
-  demoClient,
-  addressLenin,
-);
-final Counter gasLenin = Counter(
-  'Газ на Ленина 17А-73',
-  gas,
-  demoClient,
-  addressLenin,
-);
+List<Counter> demoCounters = [
+  Counter(
+    title: 'Холодная вода на Ленина 17А-73',
+    type: 0,
+    previousValue: 35,
+    address: addressLenin,
+  ),
+  Counter(
+    title: 'Горячая вода на Ленина 17А-73',
+    type: 1,
+    previousValue: 78,
+    address: addressLenin,
+  ),
+  Counter(
+    title: 'Газ на Ленина 17А-73',
+    type: 2,
+    previousValue: 448,
+    address: addressLenin,
+  ),
+  Counter(
+    title: 'Электросчетчик на Ленина 17А-73',
+    type: 3,
+    previousValue: 7183,
+    address: addressLenin,
+  ),
+];
 
-// Показания
-final Map<Counter, Indication> demoIndications = {
-  coldWaterLenin: Indication(
-    coldWaterLenin,
-    DateTime.parse('2021-03-20'),
-    15.6,
-  ),
-  hotWaterLenin: Indication(
-    hotWaterLenin,
-    DateTime.parse('2021-03-20'),
-    8.22,
-  ),
-  gasLenin: Indication(
-    gasLenin,
-    DateTime.parse('2021-03-20'),
-    24.33,
-  ),
-};
+// // Показания
+// final Map<Counter, Indication> demoIndications = {
+//   coldWaterLenin: Indication(
+//     coldWaterLenin,
+//     DateTime.parse('2021-03-20'),
+//     15.6,
+//   ),
+//   hotWaterLenin: Indication(
+//     hotWaterLenin,
+//     DateTime.parse('2021-03-20'),
+//     8.22,
+//   ),
+//   gasLenin: Indication(
+//     gasLenin,
+//     DateTime.parse('2021-03-20'),
+//     24.33,
+//   ),
+// };

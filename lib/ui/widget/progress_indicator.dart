@@ -8,12 +8,14 @@ class LoginProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: heightOfButtonsAndTextFields * 0.5,
-      width: heightOfButtonsAndTextFields * 0.5,
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(color),
-        strokeWidth: 3,
+    return Center(
+      child: SizedBox(
+        height: heightOfButtonsAndTextFields * 0.5,
+        width: heightOfButtonsAndTextFields * 0.5,
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(color),
+          strokeWidth: 3,
+        ),
       ),
     );
   }

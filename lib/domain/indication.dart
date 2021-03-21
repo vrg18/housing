@@ -1,16 +1,26 @@
 import 'package:housing/domain/counter.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'indication.g.dart';
 
 /// Поданные показания
+@JsonSerializable(fieldRename: FieldRename.snake)
 class Indication {
-  final Counter _counter;
-  final DateTime _date;
-  final double _value;
+  final int? id;
+  @JsonKey(name: 'meter')
+  final Counter counter;
+  final int value;
+  final int? previousValue;
+  final DateTime date;
 
-  Indication(this._counter, this._date, this._value);
+  Indication({
+    this.id,
+    required this.counter,
+    required this.value,
+    this.previousValue,
+    required this.date,
+  });
 
-  get counter => _counter;
+  factory Indication.fromJson(Map<String, dynamic> json) => _$IndicationFromJson(json);
 
-  get date => _date;
-
-  get value => _value;
+  Map<String, dynamic> toJson() => _$IndicationToJson(this);
 }

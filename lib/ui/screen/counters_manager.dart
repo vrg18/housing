@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/repository/counter_repository.dart';
+import 'package:housing/data/service/counter_service.dart';
 import 'package:housing/ui/res/colors.dart';
-import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
-import 'package:housing/ui/res/styles.dart';
 import 'package:housing/ui/screen/counters_history.dart';
 import 'package:housing/ui/screen/counters_supply.dart';
+import 'package:housing/ui/widget/custom_tab_bar.dart';
 import 'package:housing/ui/widget/popup_message.dart';
 import 'package:housing/ui/widget/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -35,28 +34,14 @@ class _CountersManagerState extends State<CountersManager> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(tabBarHeight + 2),
-        child: AppBar(
-          bottom: TabBar(
-            controller: _tabController,
-            labelColor: basicBlue,
-            unselectedLabelColor: unselectedBarColor,
-            unselectedLabelStyle: unselectedBarStyle,
-            tabs: [
-              SizedBox(height: tabBarHeight, child: Tab(text: supplyCountersLabel)),
-              SizedBox(height: tabBarHeight, child: Tab(text: historyCountersLabel)),
-            ],
-          ),
-        ),
-      ),
+      appBar: CustomTabBar(_tabController, supplyCountersLabel, historyCountersLabel),
       body: Builder(
         builder: (BuildContext context) {
-          if (!context.read<CounterRepository>().isAllLoaded) {
+          if (!context.read<CounterService>().isAllLoaded) {
             _weReceiveCounters();
           }
 
-          return context.watch<CounterRepository>().isAllLoaded
+          return context.watch<CounterService>().isAllLoaded
               ? TabBarView(
                   controller: _tabController,
                   children: [
@@ -73,7 +58,7 @@ class _CountersManagerState extends State<CountersManager> with SingleTickerProv
   }
 
   Future<void> _weReceiveCounters() async {
-    String error = await context.read<CounterRepository>().getCounters();
+    String error = await context.read<CounterService>().getCounters();
     if (error.isNotEmpty) {
       popupMessage(context, error);
     }

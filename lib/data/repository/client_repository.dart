@@ -1,28 +1,55 @@
-import 'package:housing/data/res/mocks.dart';
-import 'package:housing/data/storage/client_storage.dart';
+import 'package:dio/dio.dart';
+import 'package:housing/data/res/properties.dart';
 import 'package:housing/domain/client.dart';
 
-/// Бизнес-логика сущности Клиент
 class ClientRepository {
-  ClientStorage _clientStorage = ClientStorage();
-  late Client _client;
+  final Dio _dio = dioWithOptionsAndLogger;
 
-  get client => _client;
-
-  Future<String> pinCodeRequest(String phone) async {
-    return await _clientStorage.pinCodeRequest(phone);
-  }
-
-  Future<String> authentication(String phone, String password) async {
-    dynamic returned = await _clientStorage.authentication(phone, password);
-    if (returned is Client) {
-      _client = returned;
-      return '';
+  dynamic pinCodeRequest(String phone) async {
+    try {
+      var response = await _dio.post(
+        apiAuthMobile,
+        data: {'mobile': phone},
+      );
+      return _authContinueOk('', response, false);
+    } on DioError catch (e) {
+      return _continueException(e);
     }
-    return returned;
   }
 
-  void demoAuthentication() {
-    _client = demoClient;
+  dynamic authentication(String phone, String password) async {
+    try {
+      var response = await _dio.post(
+        apiAuthCustomToken,
+        data: {'mobile': phone, 'token': password, 'agree': true},
+      );
+      return _authContinueOk(phone, response, true);
+    } on DioError catch (e) {
+      return _continueException(e);
+    }
+  }
+
+  dynamic _authContinueOk(String phone, response, bool isAuth) {
+    if (response.statusCode < 300) {
+      if (isAuth) {
+        return Client(
+          phone: phone,
+          token: response.data['access'],
+          isDemo: false,
+        );
+      } else {
+        return '';
+      }
+    } else {
+      return response.statusMessage;
+    }
+  }
+
+  String _continueException(DioError error) {
+    if (error.response != null) {
+      return error.response.toString();
+    } else {
+      return error.error;
+    }
   }
 }

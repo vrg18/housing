@@ -3,19 +3,17 @@ import 'dart:io';
 /// Класс, проверяющий и хранящий платформу (Web/не Web)
 /// Используется Provider
 class Web {
-  late bool _isWeb;
+  late bool isWeb;
 
   Web() {
     try {
       if (Platform.isAndroid || Platform.isIOS) {
-        _isWeb = false;
+        isWeb = false;
       } else {
-        _isWeb = true;
+        isWeb = true;
       }
     } catch (e) {
-      _isWeb = true;
+      isWeb = true;
     }
   }
-
-  bool get isWeb => _isWeb;
 }

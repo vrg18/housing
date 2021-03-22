@@ -26,7 +26,6 @@ class WebWrapper extends StatelessWidget {
                   maxWidth: widthWebWrapper,
                   maxHeight: heightWebWrapper,
                 ),
-                //color: primaryBackgroundColor,
                 child: child,
               ),
             ),

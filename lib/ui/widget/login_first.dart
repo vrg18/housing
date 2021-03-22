@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:housing/data/repository/client_repository.dart';
+import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/ui/util/phone_number_formatter.dart';
 import 'package:housing/ui/res/colors.dart';
@@ -83,7 +83,7 @@ class _LoginFirstState extends State<LoginFirst> {
   Future<void> _gotoNextScreen() async {
     setState(() => _isLoading = true);
     FocusScope.of(context).requestFocus(new FocusNode());
-    String error = await context.read<ClientRepository>().pinCodeRequest(widget.loginController.text);
+    String error = await context.read<ClientService>().pinCodeRequest(widget.loginController.text);
     if (error.isNotEmpty) {
       setState(() => _isLoading = false);
       popupMessage(context, error);
@@ -96,7 +96,7 @@ class _LoginFirstState extends State<LoginFirst> {
   // Переходим на главную страницу приложения в демо-режиме
   void _gotoDemoNextScreen() {
     FocusScope.of(context).requestFocus(new FocusNode());
-    context.read<ClientRepository>().demoAuthentication();
+    context.read<ClientService>().demoAuthentication();
     widget.tabController.index = 2;
   }
 }

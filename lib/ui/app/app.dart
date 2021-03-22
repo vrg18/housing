@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/repository/client_repository.dart';
+import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/ui/res/strings.dart';
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           Provider<Web>(create: (_) => Web()),
-          Provider<ClientRepository>(create: (_) => ClientRepository()),
+          Provider<ClientService>(create: (_) => ClientService()),
           ChangeNotifierProvider<PhoneNumber>(create: (_) => PhoneNumber()),
         ],
         child: MaterialApp(

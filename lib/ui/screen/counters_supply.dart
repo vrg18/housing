@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/repository/counter_repository.dart';
+import 'package:housing/data/service/counter_service.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/widget/counter_card.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +15,7 @@ class CountersSupply extends StatelessWidget {
         crossAxisSpacing: basicBorderSize,
         mainAxisSpacing: basicBorderSize,
         childAspectRatio: 2,
-        children: context.read<CounterRepository>().counters.asMap().values.map((e) => CounterCard(e)).toList(),
+        children: context.read<CounterService>().counters.asMap().values.map((e) => CounterCard(e)).toList(),
       ),
     );
   }

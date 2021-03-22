@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/repository/client_repository.dart';
-import 'package:housing/data/repository/counter_repository.dart';
+import 'package:housing/data/service/client_service.dart';
+import 'package:housing/data/service/counter_service.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/screen/counters_manager.dart';
@@ -30,11 +30,11 @@ class _BottomBarManagerState extends State<BottomBarManager> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<CounterRepository>(create: (_) => CounterRepository(context.read<ClientRepository>().client)),
+        ChangeNotifierProvider<CounterService>(create: (_) => CounterService(context.read<ClientService>().client)),
       ],
       child: Scaffold(
         appBar: TopBar(
-          context.read<ClientRepository>().client.phone,
+          context.read<ClientService>().client.phone,
           _returnToLogin,
         ),
         body: IndexedStack(

@@ -45,3 +45,10 @@ final ButtonStyle rightSmallerWhiteButtonStyle = bigWhiteButtonStyle.merge(
     alignment: Alignment.centerRight,
   ),
 );
+//
+// final ButtonStyle bigWhiteButtonWithFrameStyle = bigWhiteButtonStyle.merge(
+//   TextButton.styleFrom(
+//
+//     minimumSize: Size.fromHeight(heightOfButtonsAndTextFields * 0.75),
+//   ),
+// );

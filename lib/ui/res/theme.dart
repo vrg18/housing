@@ -20,4 +20,11 @@ final mainTheme = ThemeData(
       minimumSize: Size.fromHeight(heightOfButtonsAndTextFields),
     ),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      primary: Colors.white,
+      onPrimary: basicBlue,
+      minimumSize: Size.fromHeight(heightOfButtonsAndTextFields),
+    ),
+  ),
 );

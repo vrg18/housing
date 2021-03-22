@@ -99,7 +99,7 @@ class _LoginSecondState extends State<LoginSecond> {
                 setState(() {
                   _isIntroduced = true;
                 });
-              } else if (text.length > 6) {
+              } else if (text.length > pinCodeLength) {
                 _passwordController.text = _passwordController.text.substring(0, pinCodeLength);
                 _passwordController.selection = TextSelection.fromPosition(TextPosition(offset: pinCodeLength));
               } else {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/service/counter_service.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/strings.dart';
+import 'package:housing/ui/res/styles.dart';
 import 'package:housing/ui/screen/counters_history.dart';
 import 'package:housing/ui/screen/counters_supply.dart';
 import 'package:housing/ui/widget/custom_tab_bar.dart';
@@ -52,7 +54,14 @@ class _CountersManagerState extends State<CountersManager> with SingleTickerProv
               : LoginProgressIndicator(basicBlue);
         },
       ),
-      floatingActionButton: SizedBox.shrink(),
+      floatingActionButton: SizedBox(
+        width: 160,
+        child: TextButton(
+          child: Text(addCounterLabel, style: buttonLabelStyle),
+          style: context.read<Web>().isWeb ? bigWhiteButtonStyle : smallerWhiteButtonStyle,
+          onPressed: () => {},
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }

@@ -24,5 +24,6 @@ const String supplyCountersLabel = 'Подать показания';
 const String historyCountersLabel = 'История показаний';
 const String createRequestsLabel = 'Создать заявку';
 const String historyRequestsLabel = 'История заявок';
+const String addCounterLabel = 'Добавить счетчик';
 
 const String logoPicture = 'res/logo_400x280.png';

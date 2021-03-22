@@ -6,8 +6,8 @@ import 'package:housing/domain/counter_type.dart';
 /// Моковые данные для демо-режима
 
 // Тестовый телефон
-final String testPhone = '+79626320003';
-//final String testPhone = '';
+//final String testPhone = '+79626320003';
+final String testPhone = '';
 
 // Демо-клиент
 final Client demoClient = Client(

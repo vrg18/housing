@@ -58,7 +58,6 @@ class _CountersManagerState extends State<CountersManager> with SingleTickerProv
         width: 160,
         child: TextButton(
           child: Text(addCounterLabel, style: buttonLabelStyle),
-          style: context.read<Web>().isWeb ? bigWhiteButtonStyle : smallerWhiteButtonStyle,
           onPressed: () => {},
         ),
       ),

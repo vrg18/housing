@@ -21,7 +21,6 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() => setState(() {}));
     _firstKey = GlobalKey();
     _secondKey = GlobalKey();
     _loginController = TextEditingController(text: testPhone);

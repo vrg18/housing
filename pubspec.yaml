@@ -16,15 +16,27 @@ dependencies:
   flutter_keyboard_visibility: ^5.0.0
   flutter_countdown_timer: ^4.0.0
   url_launcher: ^6.0.2
-  dio: ^4.0.0-prev1
+  dio: ^4.0.0-prev2
+  json_annotation: ^4.0.1
+  flutter_dotenv: ^4.0.0-nullsafety.0
+  pretty_dio_logger: ^1.2.0-beta-1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  build_runner: ^1.12.2
+  json_serializable: ^4.1.0
+
 flutter:
   uses-material-design: true
 
   assets:
-    - lib/ui/res/logo_200x140.png
-    - lib/ui/res/logo_400x280.png
+    - config.env
+    - res/logo_200x140.png
+    - res/logo_400x280.png
+
+  fonts:
+    - family: MyIcons
+      fonts:
+        - asset: res/MyIcons.ttf

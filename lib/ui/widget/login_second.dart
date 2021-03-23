@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:housing/data/provider/current_user.dart';
+import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/properties.dart';
@@ -41,7 +41,7 @@ class _LoginSecondState extends State<LoginSecond> {
     super.initState();
     _passwordController = TextEditingController();
     _timerController = CountdownTimerController(
-      endTime: DateTime.now().millisecondsSinceEpoch + countdownTimerRepeatedPassword,
+      endTime: DateTime.now().millisecondsSinceEpoch + countdownTimerRepeatedPinCode,
       onEnd: onEndTimer,
     );
     _isIntroduced = false;
@@ -59,6 +59,8 @@ class _LoginSecondState extends State<LoginSecond> {
 
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     return Column(
       children: [
         Text(
@@ -79,7 +81,6 @@ class _LoginSecondState extends State<LoginSecond> {
             ),
           ),
         ),
-        const SizedBox(height: 10),
         SizedBox(
           height: heightOfButtonsAndTextFields,
           child: TextField(
@@ -92,6 +93,7 @@ class _LoginSecondState extends State<LoginSecond> {
               border: OutlineInputBorder(),
               hintText: passwordHint,
             ),
+            onEditingComplete: () => node.nextFocus(),
             onChanged: (text) {
               if (text.length == pinCodeLength) {
                 setState(() {
@@ -126,21 +128,6 @@ class _LoginSecondState extends State<LoginSecond> {
                 style: context.read<Web>().isWeb ? bigWhiteButtonStyle : smallerWhiteButtonStyle,
                 onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
               ),
-        const SizedBox(height: 10),
-        TextButton(
-          child: _isLoadingLogin
-              ? LoginProgressIndicator(Colors.white)
-              : Text(
-                  enterPress,
-                  style: buttonLabelStyle,
-                ),
-          onPressed:
-              _isIntroduced && _isAgrees && !_isLoadingLogin && !_isLoadingPinCode ? () => _gotoNextScreen() : null,
-          style: TextButton.styleFrom(
-            backgroundColor: _isIntroduced && _isAgrees ? null : inactiveBackgroundColor,
-          ),
-        ),
-        const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -184,7 +171,21 @@ class _LoginSecondState extends State<LoginSecond> {
               ),
             ),
           ],
-        )
+        ),
+        const SizedBox(height: 10),
+        TextButton(
+          child: _isLoadingLogin
+              ? LoginProgressIndicator(Colors.white)
+              : Text(
+                  enterPress,
+                  style: buttonLabelStyle,
+                ),
+          onPressed:
+              _isIntroduced && _isAgrees && !_isLoadingLogin && !_isLoadingPinCode ? () => _gotoNextScreen() : null,
+          style: TextButton.styleFrom(
+            backgroundColor: _isIntroduced && _isAgrees ? null : inactiveBackgroundColor,
+          ),
+        ),
       ],
     );
   }
@@ -203,13 +204,13 @@ class _LoginSecondState extends State<LoginSecond> {
       _isIntroduced = false;
       _isAgrees = false;
     });
-    String error = await context.read<CurrentUser>().pinCodeRequest(context.read<PhoneNumber>().phoneNumber);
+    String error = await context.read<ClientService>().pinCodeRequest(context.read<PhoneNumber>().phoneNumber);
     if (error.isNotEmpty) {
       setState(() => _isLoadingPinCode = false);
       popupMessage(context, error);
     } else {
       setState(() {
-        _timerController.endTime = DateTime.now().millisecondsSinceEpoch + countdownTimerRepeatedPassword;
+        _timerController.endTime = DateTime.now().millisecondsSinceEpoch + countdownTimerRepeatedPinCode;
         _timerController.start();
         _timerIsRunning = true;
         _isLoadingPinCode = false;
@@ -221,7 +222,7 @@ class _LoginSecondState extends State<LoginSecond> {
   Future<void> _gotoNextScreen() async {
     setState(() => _isLoadingLogin = true);
     FocusScope.of(context).requestFocus(new FocusNode());
-    String error = await context.read<CurrentUser>().authentication(
+    String error = await context.read<ClientService>().authentication(
           context.read<PhoneNumber>().phoneNumber,
           _passwordController.text,
         );

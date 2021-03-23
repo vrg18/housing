@@ -5,7 +5,6 @@ Future popupMessage(BuildContext context, String content) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      print(content);
       return AlertDialog(
         title: Text(popupHeader),
         content: Text(content),

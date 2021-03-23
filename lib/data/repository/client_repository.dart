@@ -1,20 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:housing/data/res/properties.dart';
-import 'package:housing/domain/user.dart';
+import 'package:housing/domain/client.dart';
 
-class UserStorage {
-  final Dio _dioAuth = Dio(
-    BaseOptions(
-      baseUrl: baseUrl,
-      receiveDataWhenStatusError: true,
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-    ),
-  );
+class ClientRepository {
+  final Dio _dio = dioWithOptionsAndLogger;
 
   dynamic pinCodeRequest(String phone) async {
     try {
-      var response = await _dioAuth.post(
+      var response = await _dio.post(
         apiAuthMobile,
         data: {'mobile': phone},
       );
@@ -26,7 +19,7 @@ class UserStorage {
 
   dynamic authentication(String phone, String password) async {
     try {
-      var response = await _dioAuth.post(
+      var response = await _dio.post(
         apiAuthCustomToken,
         data: {'mobile': phone, 'token': password, 'agree': true},
       );
@@ -37,13 +30,12 @@ class UserStorage {
   }
 
   dynamic _authContinueOk(String phone, response, bool isAuth) {
-    print('Ответ: ${response.statusCode}/${response.statusMessage}, Содержимое: ${response.data}');
     if (response.statusCode < 300) {
       if (isAuth) {
-        return User(
-          phone,
-          response.data['access'],
-          false,
+        return Client(
+          phone: phone,
+          token: response.data['access'],
+          isDemo: false,
         );
       } else {
         return '';
@@ -54,9 +46,7 @@ class UserStorage {
   }
 
   String _continueException(DioError error) {
-    print('Ошибка: ${error.error}');
     if (error.response != null) {
-      print('Ответ: ${error.response}');
       return error.response.toString();
     } else {
       return error.error;

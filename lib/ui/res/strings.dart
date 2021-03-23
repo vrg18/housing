@@ -25,4 +25,4 @@ const String historyCountersLabel = 'История показаний';
 const String createRequestsLabel = 'Создать заявку';
 const String historyRequestsLabel = 'История заявок';
 
-const String logoPicture = 'lib/ui/res/logo_400x280.png';
+const String logoPicture = 'res/logo_400x280.png';

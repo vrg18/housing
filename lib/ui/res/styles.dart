@@ -17,6 +17,12 @@ const TextStyle unselectedBarStyle = TextStyle(
   fontSize: 13,
 );
 
+const TextStyle counterNameStyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+
+);
+
 final TextStyle basicBlueColorText = TextStyle(
   color: basicBlue,
   fontSize: 16,

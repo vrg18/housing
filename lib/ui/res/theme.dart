@@ -7,7 +7,6 @@ import 'package:housing/ui/res/sizes.dart';
 
 final mainTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
-//  backgroundColor: primaryBackgroundColor,
   primaryColor: Colors.white,
   accentColor: basicBlue,
   textSelectionTheme: TextSelectionThemeData(cursorColor: basicBlue),

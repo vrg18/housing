@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/provider/current_user.dart';
+import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/ui/res/strings.dart';
@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 /// Старт приложения
 class App extends StatelessWidget {
   @override
-  Widget build(context) => MultiProvider(
+  Widget build(BuildContext context) => MultiProvider(
         providers: [
           Provider<Web>(create: (_) => Web()),
-          Provider<CurrentUser>(create: (_) => CurrentUser()),
+          Provider<ClientService>(create: (_) => ClientService()),
           ChangeNotifierProvider<PhoneNumber>(create: (_) => PhoneNumber()),
         ],
         child: MaterialApp(
@@ -22,9 +22,8 @@ class App extends StatelessWidget {
           locale: Locale('ru', 'RU'),
           title: appTitle,
           theme: mainTheme,
-//            builder: (context, _) => context.read<Web>().isWeb ? WebWrapper(ScreenManager()) : ScreenManager()),
           home: Builder(
-            builder: (context) => context.read<Web>().isWeb ? WebWrapper(ScreenManager()) : ScreenManager(),
+            builder: (BuildContext context) => context.read<Web>().isWeb ? WebWrapper(ScreenManager()) : ScreenManager(),
           ),
         ),
       );

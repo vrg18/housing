@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: widthWebWrapper / 2,
+          height: widthWebWrapper * 0.4,
           child: Image.asset(
             logoPicture,
             fit: BoxFit.cover,

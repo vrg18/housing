@@ -7,3 +7,5 @@ final wrapperBackgroundColor = Colors.blueGrey[100];
 //final secondaryBackgroundColor = Color(0xffedeaea);
 final basicBlue = Color(0xff004f9e);
 final inactiveBackgroundColor = Colors.blueGrey[100];
+final appBarColor = Colors.grey[100];
+final unselectedBarColor = Colors.grey;

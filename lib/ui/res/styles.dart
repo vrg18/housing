@@ -13,6 +13,10 @@ const TextStyle buttonLabelStyle = TextStyle(
   fontSize: 16,
 );
 
+const TextStyle unselectedBarStyle = TextStyle(
+  fontSize: 13,
+);
+
 final TextStyle basicBlueColorText = TextStyle(
   color: basicBlue,
   fontSize: 16,

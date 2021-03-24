@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
+import 'package:housing/data/service/client_service.dart';
+import 'package:housing/data/service/counter_service.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/theme.dart';
 import 'package:housing/ui/screen/screen_manager.dart';
@@ -16,6 +17,7 @@ class App extends StatelessWidget {
           Provider<Web>(create: (_) => Web()),
           Provider<ClientService>(create: (_) => ClientService()),
           ChangeNotifierProvider<PhoneNumber>(create: (_) => PhoneNumber()),
+          ChangeNotifierProvider<CounterService>(create: (_) => CounterService()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -23,7 +25,8 @@ class App extends StatelessWidget {
           title: appTitle,
           theme: mainTheme,
           home: Builder(
-            builder: (BuildContext context) => context.read<Web>().isWeb ? WebWrapper(ScreenManager()) : ScreenManager(),
+            builder: (BuildContext context) =>
+                context.read<Web>().isWeb ? WebWrapper(ScreenManager()) : ScreenManager(),
           ),
         ),
       );

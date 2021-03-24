@@ -21,7 +21,6 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(() => setState(() {}));
     _firstKey = GlobalKey();
     _secondKey = GlobalKey();
     _loginController = TextEditingController(text: testPhone);
@@ -35,16 +34,14 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: TabBarView(
-        controller: _tabController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          LoginScreen(_tabController.index, LoginFirst(_tabController, _loginController, key: _firstKey)),
-          LoginScreen(_tabController.index, LoginSecond(_tabController, key: _secondKey)),
-          BottomBarManager(_tabController, _loginController),
-        ],
-      ),
+    return TabBarView(
+      controller: _tabController,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        LoginScreen(_tabController, LoginFirst(_tabController, _loginController, key: _firstKey)),
+        LoginScreen(_tabController, LoginSecond(_tabController, key: _secondKey)),
+        BottomBarManager(_tabController, _loginController),
+      ],
     );
   }
 }

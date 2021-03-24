@@ -11,9 +11,11 @@ const int pinCodeLength = 6;
 const int countdownTimerRepeatedPinCode = 61 * 1000; // 61 секунда
 
 const String apiAuthMobile = '/api/v1/auth/mobile';
-const String apiAuthCustomToken = '/api/v1/auth/customtoken';
-const String apiMeter = '/api/v1/meter';
-const String apiMeterTypes = '/api/v1/metertypes';
+const String apiAuthCustomToken = '/api/v1/auth/customtoken/';
+const String apiMeter = '/api/v1/meter/';
+const String apiMeterTypes = '/api/v1/metertypes/';
+const String apiAddress = '/api/v1/address/';
+const String apiValues = '/api/v1/values/';
 
 // Dio с опциями и логгером
 final Dio dioWithOptionsAndLogger = Dio(BaseOptions(
@@ -29,10 +31,10 @@ final Dio dioWithOptionsAndLogger = Dio(BaseOptions(
         maxWidth: 120),
   );
 
-// Соответствия типов счетчиков, иконок и единиц измерений
+// Соответствия типов счетчиков и иконок
 final Map<String, List<dynamic>> matchOfTypesIconsAndUnits = {
-  'хол': [waterIcon, basicBlue, 'м³'],
-  'гор': [waterIcon, Colors.red, 'м³'],
-  'газ': [gasIcon, Colors.lightBlueAccent, 'м³'],
-  'электр': [electricityIcon, Colors.black, 'kW·h'],
+  'хол': [waterIcon, basicBlue],
+  'гор': [waterIcon, Colors.red],
+  'газ': [gasIcon, Colors.lightBlueAccent],
+  'электр': [electricityIcon, Colors.yellow],
 };

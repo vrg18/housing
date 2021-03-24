@@ -1,18 +1,19 @@
-import 'package:json_annotation/json_annotation.dart';
 import 'package:housing/domain/address.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'counter_type.dart';
+
 part 'counter.g.dart';
 
 /// Конкретный счетчик
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class Counter {
-  final int? id;
+  int? id;
   final String title;
   @JsonKey(name: 'meters_type')
   final int type;
-  final previousValue;
   final Address address;
+  int? previousValue;
   @JsonKey(ignore: true)
   CounterType? counterType;
 
@@ -20,8 +21,8 @@ class Counter {
     this.id,
     required this.title,
     required this.type,
-    required this.previousValue,
     required this.address,
+    this.previousValue,
     this.counterType,
   });
 

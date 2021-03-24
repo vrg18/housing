@@ -1,12 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/properties.dart';
+import 'package:housing/data/service/client_service.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
@@ -59,75 +60,102 @@ class _LoginSecondState extends State<LoginSecond> {
 
   @override
   Widget build(BuildContext context) {
-    final node = FocusScope.of(context);
-
     return Column(
       children: [
-        Text(
-          inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
-          textAlign: TextAlign.center,
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: SizedBox(
-            width: 150,
-            child: TextButton(
-              child: Text(inscriptionChangeNumber, style: buttonLabelStyle),
-              style: rightSmallerWhiteButtonStyle,
-              onPressed: () {
-                FocusScope.of(context).requestFocus(new FocusNode());
-                widget.tabController.index = 0;
-              },
-            ),
-          ),
-        ),
-        SizedBox(
-          height: heightOfButtonsAndTextFields,
-          child: TextField(
-            controller: _passwordController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: passwordHint,
-            ),
-            onEditingComplete: () => node.nextFocus(),
-            onChanged: (text) {
-              if (text.length == pinCodeLength) {
-                setState(() {
-                  _isIntroduced = true;
-                });
-              } else if (text.length > pinCodeLength) {
-                _passwordController.text = _passwordController.text.substring(0, pinCodeLength);
-                _passwordController.selection = TextSelection.fromPosition(TextPosition(offset: pinCodeLength));
-              } else {
-                setState(() {
-                  _isIntroduced = false;
-                  _isAgrees = false;
-                });
-              }
-            },
-          ),
-        ),
-        _timerIsRunning
-            ? SizedBox(
-                height: heightOfButtonsAndTextFields * (context.read<Web>().isWeb ? 0.83 : 1),
-                child: Center(
-                  child: CountdownTimer(
-                    controller: _timerController,
-                    widgetBuilder: (_, time) => TimerFormatTemplate(time!),
-                  ),
+        Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: SizedBox(
+                height: heightOfButtonsAndTextFields,
+                child: AutoSizeText(
+                  inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
                 ),
-              )
-            : TextButton(
-                child: _isLoadingPinCode
-                    ? LoginProgressIndicator(basicBlue)
-                    : Text(inscriptionRepeatedPassword, style: buttonLabelStyle),
-                style: context.read<Web>().isWeb ? bigWhiteButtonStyle : smallerWhiteButtonStyle,
-                onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
               ),
+            ),
+            const SizedBox(width: basicBorderSize),
+            Flexible(
+              flex: 1,
+              child: ElevatedButton(
+                child: Text(
+                  inscriptionChangeNumber,
+                  style: activeWhiteButtonLabelStyle,
+                  textAlign: TextAlign.center,
+                ),
+                style: bigWhiteButtonStyle,
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  widget.tabController.index = 0;
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 30),
+        Row(
+          children: [
+            Flexible(
+              flex: 2,
+              child: SizedBox(
+                height: heightOfButtonsAndTextFields,
+                child: TextField(
+                  controller: _passwordController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  decoration: InputDecoration(
+                    hintText: passwordHint,
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                  onChanged: (text) {
+                    if (text.length == pinCodeLength) {
+                      setState(() {
+                        _isIntroduced = true;
+                      });
+                    } else if (text.length > pinCodeLength) {
+                      _passwordController.text = _passwordController.text.substring(0, pinCodeLength);
+                      _passwordController.selection = TextSelection.fromPosition(TextPosition(offset: pinCodeLength));
+                    } else {
+                      setState(() {
+                        _isIntroduced = false;
+                        _isAgrees = false;
+                      });
+                    }
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(width: basicBorderSize),
+            Flexible(
+              flex: 1,
+              child: _timerIsRunning
+                  ? SizedBox(
+                      height: heightOfButtonsAndTextFields * (context.read<Web>().isWeb ? 0.83 : 1),
+                      child: Center(
+                        child: CountdownTimer(
+                          controller: _timerController,
+                          widgetBuilder: (_, time) => TimerFormatTemplate(time!),
+                        ),
+                      ),
+                    )
+                  : ElevatedButton(
+                      child: _isLoadingPinCode
+                          ? LoginProgressIndicator(basicBlue)
+                          : Text(
+                              inscriptionRepeatedPassword,
+                              style: activeWhiteButtonLabelStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                      style: context.read<Web>().isWeb ? bigWhiteButtonStyle : bigWhiteButtonStyle,
+                      onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
+                    ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -172,13 +200,13 @@ class _LoginSecondState extends State<LoginSecond> {
             ),
           ],
         ),
-        const SizedBox(height: 10),
-        TextButton(
+        const SizedBox(height: 20),
+        ElevatedButton(
           child: _isLoadingLogin
               ? LoginProgressIndicator(Colors.white)
               : Text(
                   enterPress,
-                  style: buttonLabelStyle,
+                  style: _isIntroduced && _isAgrees ? activeButtonLabelStyle : inactiveButtonLabelStyle,
                 ),
           onPressed:
               _isIntroduced && _isAgrees && !_isLoadingLogin && !_isLoadingPinCode ? () => _gotoNextScreen() : null,
@@ -197,7 +225,7 @@ class _LoginSecondState extends State<LoginSecond> {
 
   // Инициируем переотправку пин-кода
   Future<void> _repeatPinCodeRequest() async {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).unfocus();
     setState(() {
       _isLoadingPinCode = true;
       _passwordController.clear();
@@ -221,7 +249,7 @@ class _LoginSecondState extends State<LoginSecond> {
   // Логинимся с пин-кодом и переходим на главную страницу приложения
   Future<void> _gotoNextScreen() async {
     setState(() => _isLoadingLogin = true);
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).unfocus();
     String error = await context.read<ClientService>().authentication(
           context.read<PhoneNumber>().phoneNumber,
           _passwordController.text,

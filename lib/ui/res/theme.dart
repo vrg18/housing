@@ -13,17 +13,10 @@ final mainTheme = ThemeData(
   inputDecorationTheme: InputDecorationTheme(
     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: basicBlue)),
   ),
-  textButtonTheme: TextButtonThemeData(
+  elevatedButtonTheme: ElevatedButtonThemeData(
     style: TextButton.styleFrom(
       primary: Colors.white,
       backgroundColor: basicBlue,
-      minimumSize: Size.fromHeight(heightOfButtonsAndTextFields),
-    ),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ElevatedButton.styleFrom(
-      primary: Colors.white,
-      onPrimary: basicBlue,
       minimumSize: Size.fromHeight(heightOfButtonsAndTextFields),
     ),
   ),

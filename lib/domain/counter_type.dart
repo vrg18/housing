@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'counter_type.g.dart';
 
 /// Тип счетчика
@@ -7,22 +8,19 @@ part 'counter_type.g.dart';
 class CounterType {
   final int? id;
   final String title;
+  final String measure;
   @JsonKey(ignore: true)
   IconData? icon;
   @JsonKey(ignore: true)
   Color? color;
-  @JsonKey(ignore: true)
-  String? unit;
 
   CounterType({
     this.id,
     required this.title,
+    required this.measure,
     this.icon,
     this.color,
-    this.unit,
   });
 
   factory CounterType.fromJson(Map<String, dynamic> json) => _$CounterTypeFromJson(json);
-
-  Map<String, dynamic> toJson() => _$CounterTypeToJson(this);
 }

@@ -8,7 +8,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 /// Настройки доступа к Backend и пр.
 
 const int pinCodeLength = 6;
-const int countdownTimerRepeatedPinCode = 61 * 1000; // 61 секунда
+const int countdownTimerRepeatedPinCode = 60 * 1000; // 60 секунд
 
 const String apiAuthMobile = '/api/v1/auth/mobile';
 const String apiAuthCustomToken = '/api/v1/auth/customtoken/';

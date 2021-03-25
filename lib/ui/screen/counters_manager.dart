@@ -7,7 +7,7 @@ import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
-import 'package:housing/ui/screen/counter_details.dart';
+import 'package:housing/ui/screen/counter_new.dart';
 import 'package:housing/ui/screen/web_wrapper.dart';
 import 'package:housing/ui/widget/counter_card_elevated.dart';
 import 'package:housing/ui/widget/popup_message.dart';
@@ -48,8 +48,7 @@ class CountersManager extends StatelessWidget {
               ? () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) =>
-                              context.read<Web>().isWeb ? WebWrapper(CounterDetails(null)) : CounterDetails(null)))
+                          builder: (_) => context.read<Web>().isWeb ? WebWrapper(CounterNew()) : CounterNew()))
                   .then((value) => _gotoSaveCounter(context, value))
               : null,
         ),

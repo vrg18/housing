@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:housing/domain/counter.dart';
-import 'package:housing/domain/counter_type.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
@@ -27,7 +26,6 @@ class _CounterDetailsState extends State<CounterDetails> {
   late final FocusNode _titleFocus;
 
   late final FocusNode _currentFocus;
-  late Map<String, dynamic> _selectedValues;
   late bool _isTitleReady;
   late bool _isCurrentReady;
   late bool _isEnableEdit;
@@ -47,10 +45,6 @@ class _CounterDetailsState extends State<CounterDetails> {
     _titleFocus.addListener(() => setState(() {}));
     _currentFocus = FocusNode();
     _currentFocus.addListener(() => setState(() {}));
-    _selectedValues = {
-      'Type': widget.counter!.counterType,
-      'Address': widget.counter!.address,
-    };
     _isTitleReady = false;
     _isCurrentReady = false;
     _isEnableEdit = false;
@@ -74,6 +68,7 @@ class _CounterDetailsState extends State<CounterDetails> {
       appBar: TopBar(
         mainIcon: Icons.chevron_left,
         mainCallback: _returnToPreviousScreen,
+        iconMessage: backTooltipMessage,
       ),
       body: Padding(
         padding: const EdgeInsets.all(basicBorderSize),
@@ -172,21 +167,6 @@ class _CounterDetailsState extends State<CounterDetails> {
         ),
       ),
     );
-  }
-
-  Widget _dropdownMenuItem(dynamic value) {
-    return value is CounterType
-        ? Row(
-            children: [
-              Icon(
-                value.icon,
-                color: value.color,
-              ),
-              const SizedBox(width: 4),
-              Text(value.title),
-            ],
-          )
-        : Text(value.toString());
   }
 
   InputDecoration _decorationOfTextField(String label, FocusNode? _focus, Icon? icon) {

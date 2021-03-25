@@ -10,13 +10,17 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback mainCallback;
   final IconData mainIcon;
   final double? iconSize;
+  final String? iconMessage;
   final VoidCallback? phoneCallback;
+  final String? phoneMessage;
 
   TopBar({
     required this.mainCallback,
     required this.mainIcon,
     this.iconSize,
+    this.iconMessage,
     this.phoneCallback,
+    this.phoneMessage,
   });
 
   @override
@@ -37,39 +41,51 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(
               height: appBarHeight,
               width: appBarHeight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    child: Icon(
-                      mainIcon,
-                      size: iconSize ?? 32,
+              child: Tooltip(
+                message: iconMessage ?? '',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      child: Icon(
+                        mainIcon,
+                        size: iconSize ?? 32,
+                      ),
+                      onTap: () => mainCallback(),
                     ),
-                    onTap: () => mainCallback(),
                   ),
                 ),
               ),
             ),
             SizedBox(
               height: appBarHeight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    child: Row(
-                      children: [
-                        Icon(Icons.person),
-                        Text(context.read<ClientService>().client.phone),
-                      ],
-                    ),
-                    onTap: phoneCallback != null ? () => phoneCallback!() : null,
-                  ),
-                ),
-              ),
+              child: phoneCallback != null
+                  ? Tooltip(
+                      message: phoneMessage ?? '',
+                      child: _profileButton(context),
+                    )
+                  : _profileButton(context),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _profileButton(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          child: Row(
+            children: [
+              Icon(Icons.person),
+              Text(context.read<ClientService>().client.phone),
+            ],
+          ),
+          onTap: phoneCallback != null ? () => phoneCallback!() : null,
         ),
       ),
     );

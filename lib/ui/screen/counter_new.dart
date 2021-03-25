@@ -55,6 +55,7 @@ class _CounterNewState extends State<CounterNew> {
       appBar: TopBar(
         mainIcon: Icons.chevron_left,
         mainCallback: _returnToPreviousScreen,
+        iconMessage: backTooltipMessage,
       ),
       body: Padding(
         padding: const EdgeInsets.all(basicBorderSize),

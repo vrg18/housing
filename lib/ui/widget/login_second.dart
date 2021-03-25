@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/properties.dart';
 import 'package:housing/data/service/client_service.dart';
@@ -63,32 +62,44 @@ class _LoginSecondState extends State<LoginSecond> {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              flex: 2,
-              child: SizedBox(
-                height: heightOfButtonsAndTextFields,
-                child: AutoSizeText(
-                  inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
-                ),
+              child: AutoSizeText(
+                inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
+                maxLines: 2,
               ),
             ),
-            const SizedBox(width: basicBorderSize),
-            Flexible(
-              flex: 1,
-              child: ElevatedButton(
-                child: Text(
-                  inscriptionChangeNumber,
-                  style: activeWhiteButtonLabelStyle,
-                  textAlign: TextAlign.center,
+            //const SizedBox(width: basicBorderSize),
+            // Flexible(
+            //   flex: 1,
+            //   child: ElevatedButton(
+            //     child: Text(
+            //       inscriptionChangeNumber,
+            //       style: activeWhiteButtonLabelStyle,
+            //       textAlign: TextAlign.center,
+            //     ),
+            //     style: bigWhiteButtonStyle,
+            //     onPressed: () {
+            //       FocusScope.of(context).unfocus();
+            //       widget.tabController.index = 0;
+            //     },
+            //   ),
+            // ),
+            Tooltip(
+              message: inscriptionChangeNumber,
+              child: IconButton(
+                iconSize: 32,
+                icon: Icon(
+                  Icons.replay,
+                  color: basicBlue,
                 ),
-                style: bigWhiteButtonStyle,
                 onPressed: () {
                   FocusScope.of(context).unfocus();
                   widget.tabController.index = 0;
                 },
               ),
-            ),
+            )
           ],
         ),
         const SizedBox(height: 30),
@@ -98,61 +109,93 @@ class _LoginSecondState extends State<LoginSecond> {
               flex: 2,
               child: SizedBox(
                 height: heightOfButtonsAndTextFields,
-                child: TextField(
-                  controller: _passwordController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
+                child: Stack(
+                  children: [
+                    TextField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      decoration: InputDecoration(
+                        hintText: passwordHint,
+                        border: OutlineInputBorder(),
+                        contentPadding: EdgeInsets.only(left: 10),
+                      ),
+                      onEditingComplete: () => FocusScope.of(context).nextFocus(),
+                      onChanged: (text) {
+                        if (text.length == pinCodeLength) {
+                          setState(() {
+                            _isIntroduced = true;
+                          });
+                        } else if (text.length > pinCodeLength) {
+                          _passwordController.text = _passwordController.text.substring(0, pinCodeLength);
+                          _passwordController.selection =
+                              TextSelection.fromPosition(TextPosition(offset: pinCodeLength));
+                        } else {
+                          setState(() {
+                            _isIntroduced = false;
+                            _isAgrees = false;
+                          });
+                        }
+                      },
+                    ),
+                    Positioned(
+                      right: 0,
+                      child: SizedBox(
+                        width: heightOfButtonsAndTextFields,
+                        height: heightOfButtonsAndTextFields,
+                        child: Center(
+                          child: _timerIsRunning
+                              ? CountdownTimer(
+                                  controller: _timerController,
+                                  widgetBuilder: (_, time) => TimerFormatTemplate(time!),
+                                )
+                              : _isLoadingPinCode
+                                  ? LoginProgressIndicator(basicBlue)
+                                  : Tooltip(
+                                      message: inscriptionRepeatedPassword,
+                                      child: IconButton(
+                                        iconSize: 32,
+                                        icon: Icon(
+                                          Icons.replay,
+                                          color: basicBlue,
+                                        ),
+                                        onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
+                                      ),
+                                    ),
+                        ),
+                      ),
+                    ),
                   ],
-                  decoration: InputDecoration(
-                    hintText: passwordHint,
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.only(left: 10),
-                  ),
-                  onEditingComplete: () => FocusScope.of(context).nextFocus(),
-                  onChanged: (text) {
-                    if (text.length == pinCodeLength) {
-                      setState(() {
-                        _isIntroduced = true;
-                      });
-                    } else if (text.length > pinCodeLength) {
-                      _passwordController.text = _passwordController.text.substring(0, pinCodeLength);
-                      _passwordController.selection = TextSelection.fromPosition(TextPosition(offset: pinCodeLength));
-                    } else {
-                      setState(() {
-                        _isIntroduced = false;
-                        _isAgrees = false;
-                      });
-                    }
-                  },
                 ),
               ),
             ),
-            const SizedBox(width: basicBorderSize),
-            Flexible(
-              flex: 1,
-              child: _timerIsRunning
-                  ? SizedBox(
-                      height: heightOfButtonsAndTextFields * (context.read<Web>().isWeb ? 0.83 : 1),
-                      child: Center(
-                        child: CountdownTimer(
-                          controller: _timerController,
-                          widgetBuilder: (_, time) => TimerFormatTemplate(time!),
-                        ),
-                      ),
-                    )
-                  : ElevatedButton(
-                      child: _isLoadingPinCode
-                          ? LoginProgressIndicator(basicBlue)
-                          : Text(
-                              inscriptionRepeatedPassword,
-                              style: activeWhiteButtonLabelStyle,
-                              textAlign: TextAlign.center,
-                            ),
-                      style: context.read<Web>().isWeb ? bigWhiteButtonStyle : bigWhiteButtonStyle,
-                      onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
-                    ),
-            ),
+            // const SizedBox(width: basicBorderSize),
+            // Flexible(
+            //   flex: 1,
+            //   child: _timerIsRunning
+            //       ? SizedBox(
+            //           height: heightOfButtonsAndTextFields * (context.read<Web>().isWeb ? 0.83 : 1),
+            //           child: Center(
+            //             child: CountdownTimer(
+            //               controller: _timerController,
+            //               widgetBuilder: (_, time) => TimerFormatTemplate(time!),
+            //             ),
+            //           ),
+            //         )
+            //       : ElevatedButton(
+            //           child: _isLoadingPinCode
+            //               ? LoginProgressIndicator(basicBlue)
+            //               : Text(
+            //                   inscriptionRepeatedPassword,
+            //                   style: activeWhiteButtonLabelStyle,
+            //                   textAlign: TextAlign.center,
+            //                 ),
+            //           style: context.read<Web>().isWeb ? bigWhiteButtonStyle : bigWhiteButtonStyle,
+            //           onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
+            //         ),
+            // ),
           ],
         ),
         const SizedBox(height: 20),

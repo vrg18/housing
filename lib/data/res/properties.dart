@@ -19,7 +19,11 @@ const String apiValues = '/api/v1/values/';
 
 // Dio с опциями и логгером
 final Dio dioWithOptionsAndLogger = Dio(BaseOptions(
-    baseUrl: env['BASE_URL']!, receiveDataWhenStatusError: true, connectTimeout: 5000, receiveTimeout: 3000))
+  baseUrl: env['BASE_URL']!,
+  receiveDataWhenStatusError: true,
+  connectTimeout: 5000,
+  receiveTimeout: 3000,
+))
   ..interceptors.add(
     PrettyDioLogger(
         requestHeader: true,
@@ -36,5 +40,5 @@ final Map<String, List<dynamic>> matchOfTypesIconsAndUnits = {
   'хол': [waterIcon, basicBlue],
   'гор': [waterIcon, Colors.red],
   'газ': [gasIcon, Colors.lightBlueAccent],
-  'электр': [electricityIcon, Colors.yellow],
+  'электр': [electricityIcon, Colors.yellow[700]],
 };

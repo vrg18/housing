@@ -37,7 +37,9 @@ class _BottomBarManagerState extends State<BottomBarManager> {
         mainCallback: _returnToLogin,
         mainIcon: logoutIcon,
         iconSize: 16,
+        iconMessage: exitTooltipMessage,
         phoneCallback: _toEditProfile,
+        phoneMessage: profileTooltipMessage,
       ),
       body: IndexedStack(
         index: _selectedPage,

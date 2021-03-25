@@ -36,5 +36,9 @@ const String previousValueLabel = 'Предыдущие показания';
 const String currentValueLabel = 'Текущие показания';
 const String historyValueLabel = 'История показаний';
 const String incorrectValueMessage = 'Введено некорректное значение!';
+const String exitTooltipMessage = 'Выход';
+const String backTooltipMessage = 'Назад';
+const String profileTooltipMessage = 'Профиль';
+
 
 const String logoPicture = 'res/logo_400x280.png';

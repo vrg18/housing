@@ -10,7 +10,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 const int pinCodeLength = 6;
 const int countdownTimerRepeatedPinCode = 60 * 1000; // 60 секунд
 
-const String apiAuthMobile = '/api/v1/auth/mobile';
+const String apiAuthMobile = '/api/v1/auth/mobile/';
 const String apiAuthCustomToken = '/api/v1/auth/customtoken/';
 const String apiMeter = '/api/v1/meter/';
 const String apiMeterTypes = '/api/v1/metertypes/';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/mocks.dart';
-import 'package:housing/data/service/client_service.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
@@ -92,8 +91,7 @@ class LoginScreen extends StatelessWidget {
 
   // Переходим на главную страницу приложения в демо-режиме
   void _gotoDemoNextScreen(BuildContext context) {
-    context.read<ClientService>().demoAuthentication();
-    context.read<PhoneNumber>().phoneNumber = demoClient.phone;
+    context.read<PhoneNumber>().phoneNumber = demoPhoneNumber;
     tabController.index = 1;
   }
 }

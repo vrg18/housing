@@ -23,7 +23,7 @@ class _ScreenManagerState extends State<ScreenManager> with SingleTickerProvider
     _tabController = TabController(length: 3, vsync: this);
     _firstKey = GlobalKey();
     _secondKey = GlobalKey();
-    _loginController = TextEditingController(text: testPhone);
+    _loginController = TextEditingController(text: testPhoneNumber);
   }
 
   @override

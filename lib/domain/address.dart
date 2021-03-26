@@ -10,7 +10,7 @@ class Address {
   final String house;
   final String? building;
   final String? apartment;
-  final bool isMain;
+  final bool? isMain;
 
   Address({
     this.id,
@@ -18,7 +18,7 @@ class Address {
     required this.house,
     this.building,
     this.apartment,
-    required this.isMain,
+    this.isMain,
   });
 
   factory Address.fromJson(Map<String, dynamic> json) => _$AddressFromJson(json);

@@ -75,6 +75,12 @@ class CounterService with ChangeNotifier {
     }
   }
 
+  // Создать новый счетчик
+  void addNewAddress(Address address) {
+    addresses.add(address);
+    notifyListeners();
+  }
+
   // Подать новое показание
   Future<String> addNewIndication(Counter counter, String valueS) async {
     double? valueD = double.tryParse(valueS);
@@ -100,6 +106,13 @@ class CounterService with ChangeNotifier {
           ));
       return returned;
     }
+  }
+
+  /// Почистить флажки при смене клиента
+  void serviceClear() {
+    isAllLoaded = false;
+    _isTypeLoaded = false;
+    _isAddressLoaded = false;
   }
 
   // Получить список типов счетчиков
@@ -135,7 +148,7 @@ class CounterService with ChangeNotifier {
     return '';
   }
 
-  // С бэка приходят ID типов счетчиков, сопоставим с классом CounterType...
+  // С бэка приходят только ID типов счетчиков, сопоставим с классом CounterType...
   void _fillCounterTypes(List<CounterType> counterTypes) {
     counters.asMap().values.forEach((c) => c.counterType = _findCounterType(c.type));
   }

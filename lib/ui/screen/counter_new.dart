@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/service/counter_service.dart';
+import 'package:housing/domain/address.dart';
 import 'package:housing/domain/counter.dart';
 import 'package:housing/domain/counter_type.dart';
 import 'package:housing/ui/res/colors.dart';
@@ -7,10 +9,13 @@ import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
+import 'package:housing/ui/screen/address_new.dart';
+import 'package:housing/ui/screen/web_wrapper.dart';
+import 'package:housing/ui/widget/decoration_of_text_field.dart';
 import 'package:housing/ui/widget/top_bar.dart';
 import 'package:provider/provider.dart';
 
-/// Страница создания нового счетчиков
+/// Страница создания нового счетчика
 class CounterNew extends StatefulWidget {
   @override
   _CounterNewState createState() => _CounterNewState();
@@ -76,7 +81,7 @@ class _CounterNewState extends State<CounterNew> {
                   controller: _titleController,
                   focusNode: _titleFocus,
                   autofocus: true,
-                  decoration: _decorationOfTextField(counterNameLabel, _titleFocus, null),
+                  decoration: decorationOfTextField(counterNameLabel, _titleFocus, null),
                   onChanged: (text) => _setIsCounterReady(),
                   onEditingComplete: () => FocusScope.of(context).requestFocus(_typeFocus),
                 ),
@@ -84,7 +89,7 @@ class _CounterNewState extends State<CounterNew> {
               const SizedBox(height: 16),
               _customDropdownButton('Type', _typeFocus, counterTypeLabel, context.read<CounterService>().counterTypes),
               const SizedBox(height: 16),
-              _customDropdownButton('Address', _addressFocus, addressLabel, context.read<CounterService>().addresses),
+              _customDropdownButton('Address', _addressFocus, addressLabel, context.watch<CounterService>().addresses),
               const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
@@ -96,14 +101,18 @@ class _CounterNewState extends State<CounterNew> {
                       textAlign: TextAlign.center,
                     ),
                     style: blueButtonStyle,
-                    onPressed: () {},
+                    onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => context.read<Web>().isWeb ? WebWrapper(AddressNew()) : AddressNew()))
+                        .then((value) => _gotoSaveAddress(context, value)),
                   ),
                 ),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 child: Text(
-                  saveCounterLabel,
+                  saveLabelButton,
                   style: _isCounterReady ? activeButtonLabelStyle : inactiveButtonLabelStyle,
                 ),
                 onPressed: _isCounterReady ? () => _gotoSaveCounter() : null,
@@ -155,15 +164,6 @@ class _CounterNewState extends State<CounterNew> {
         : Text(value.toString());
   }
 
-  InputDecoration _decorationOfTextField(String label, FocusNode? _focus, Icon? icon) {
-    return InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: _focus != null && _focus.hasFocus ? basicBlue : Colors.grey[600]),
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.only(left: 10),
-        suffixIcon: icon);
-  }
-
   void _setIsCounterReady() {
     setState(() => _isCounterReady =
         _titleController.text.isNotEmpty && _selectedValues['Type'] != null && _selectedValues['Address'] != null);
@@ -184,5 +184,12 @@ class _CounterNewState extends State<CounterNew> {
   // Возврат на предыдущий экран без сохранения
   void _returnToPreviousScreen() {
     Navigator.pop(context, null);
+  }
+
+  // Сохранить введенный новый адрес
+  void _gotoSaveAddress(BuildContext context, dynamic value) {
+    if (value != null && value is Address) {
+      context.read<CounterService>().addNewAddress(value);
+    }
   }
 }

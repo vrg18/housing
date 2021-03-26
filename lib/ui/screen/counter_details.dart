@@ -6,6 +6,7 @@ import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
+import 'package:housing/ui/widget/decoration_of_text_field.dart';
 import 'package:housing/ui/widget/top_bar.dart';
 
 /// Страница деталей счетчика и ввода новых показаний
@@ -92,7 +93,7 @@ class _CounterDetailsState extends State<CounterDetails> {
                       controller: _titleController,
                       focusNode: _titleFocus,
                       autofocus: true,
-                      decoration: _decorationOfTextField(counterNameLabel, _titleFocus, null),
+                      decoration: decorationOfTextField(counterNameLabel, _titleFocus, null),
                       onChanged: (text) => _setIsTitleReady(),
                       onEditingComplete: () => FocusScope.of(context).requestFocus(_currentFocus),
                     ),
@@ -113,19 +114,19 @@ class _CounterDetailsState extends State<CounterDetails> {
               TextField(
                 enabled: false,
                 controller: _typeController,
-                decoration: _decorationOfTextField(counterTypeLabel, null, null),
+                decoration: decorationOfTextField(counterTypeLabel, null, null),
               ),
               const SizedBox(height: 16),
               TextField(
                 enabled: false,
                 controller: _addressController,
-                decoration: _decorationOfTextField(addressLabel, null, null),
+                decoration: decorationOfTextField(addressLabel, null, null),
               ),
               const SizedBox(height: 16),
               TextField(
                 enabled: false,
                 controller: _previousController,
-                decoration: _decorationOfTextField(previousValueLabel, null, null),
+                decoration: decorationOfTextField(previousValueLabel, null, null),
               ),
               const SizedBox(height: 16),
               TextField(
@@ -135,7 +136,7 @@ class _CounterDetailsState extends State<CounterDetails> {
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 focusNode: _currentFocus,
-                decoration: _decorationOfTextField(
+                decoration: decorationOfTextField(
                   currentValueLabel,
                   _currentFocus,
                   Icon(Icons.edit, color: Colors.black),
@@ -146,7 +147,7 @@ class _CounterDetailsState extends State<CounterDetails> {
               const SizedBox(height: 16),
               ElevatedButton(
                 child: Text(
-                  saveCounterLabel,
+                  saveLabelButton,
                   style: _isActiveSaveButton() ? activeButtonLabelStyle : inactiveButtonLabelStyle,
                 ),
                 onPressed: _isActiveSaveButton() ? () => _gotoSaveCounter() : null,
@@ -168,15 +169,6 @@ class _CounterDetailsState extends State<CounterDetails> {
         ),
       ),
     );
-  }
-
-  InputDecoration _decorationOfTextField(String label, FocusNode? _focus, Icon? icon) {
-    return InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: _focus != null && _focus.hasFocus ? basicBlue : Colors.grey[600]),
-        border: OutlineInputBorder(),
-        contentPadding: EdgeInsets.only(left: 10),
-        suffixIcon: icon);
   }
 
   bool _isActiveSaveButton() {

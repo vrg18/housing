@@ -42,7 +42,7 @@ class _LoginSecondState extends State<LoginSecond> {
   @override
   void initState() {
     super.initState();
-    _isDemo = context.read<PhoneNumber>().phoneNumber == demoClient.phone;
+    _isDemo = context.read<PhoneNumber>().phoneNumber == demoPhoneNumber;
     _passwordController = TextEditingController(text: _isDemo ? demoPinCode : '');
     _timerController = CountdownTimerController(
       endTime: DateTime.now().millisecondsSinceEpoch + countdownTimerRepeatedPinCode,
@@ -115,9 +115,7 @@ class _LoginSecondState extends State<LoginSecond> {
                       onEditingComplete: () => FocusScope.of(context).nextFocus(),
                       onChanged: (text) {
                         if (text.length == pinCodeLength) {
-                          setState(() {
-                            _isIntroduced = true;
-                          });
+                          setState(() => _isIntroduced = true);
                         } else if (text.length > pinCodeLength) {
                           _passwordController.text = _passwordController.text.substring(0, pinCodeLength);
                           _passwordController.selection =
@@ -270,6 +268,7 @@ class _LoginSecondState extends State<LoginSecond> {
         widget.tabController.index = 2;
       }
     } else {
+      context.read<ClientService>().demoAuthentication();
       widget.tabController.index = 2;
     }
   }

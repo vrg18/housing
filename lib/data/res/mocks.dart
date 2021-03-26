@@ -1,19 +1,15 @@
 import 'package:housing/domain/address.dart';
-import 'package:housing/domain/client.dart';
 import 'package:housing/domain/counter.dart';
 import 'package:housing/domain/counter_type.dart';
 
 /// Моковые данные для демо-режима
 
 // Тестовый телефон
-const String testPhone = '+7962632000';
-//final String testPhone = '';
+//const String testPhoneNumber = '+7962632000';
+const String testPhoneNumber = '';
 
 // Демо-клиент
-final Client demoClient = Client(
-  phone: '+79999999999',
-  isDemo: true,
-);
+const String demoPhoneNumber = '+79999999999';
 const String demoPinCode = '999999';
 
 // Типы счетчиков

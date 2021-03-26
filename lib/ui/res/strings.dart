@@ -26,7 +26,7 @@ const String historyCountersLabel = 'История показаний';
 const String createRequestsLabel = 'Создать заявку';
 const String historyRequestsLabel = 'История заявок';
 const String addCounterLabel = 'Добавить счетчик';
-const String saveCounterLabel = 'Сохранить';
+const String saveLabelButton = 'Сохранить';
 const String newCounterLabel = 'Новый счетчик';
 const String counterNameLabel = 'Название счетчика';
 const String counterTypeLabel = 'Тип счетчика';
@@ -40,6 +40,10 @@ const String incorrectValueMessage = 'Введено некорректное з
 const String exitTooltipMessage = 'Выход';
 const String backTooltipMessage = 'Назад';
 const String profileTooltipMessage = 'Профиль';
-
+const String newAddressLabel = 'Новый адрес';
+const String addressStreetLabel = 'Улица *';
+const String addressHouseLabel = 'Дом *';
+const String addressBuildingLabel = 'Корпус';
+const String addressApartmentLabel = 'Квартира';
 
 const String logoPicture = 'res/logo_400x280.png';

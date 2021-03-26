@@ -1,5 +1,5 @@
-import 'package:housing/data/res/mocks.dart';
 import 'package:housing/data/repository/client_repository.dart';
+import 'package:housing/data/res/mocks.dart';
 import 'package:housing/domain/client.dart';
 
 /// Бизнес-логика сущности Клиент
@@ -21,6 +21,9 @@ class ClientService {
   }
 
   void demoAuthentication() {
-    client = demoClient;
+    client = Client(
+      phone: demoPhoneNumber,
+      isDemo: true,
+    );
   }
 }

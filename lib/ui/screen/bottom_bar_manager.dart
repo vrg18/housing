@@ -36,7 +36,6 @@ class _BottomBarManagerState extends State<BottomBarManager> {
       appBar: TopBar(
         mainCallback: _returnToLogin,
         mainIcon: logoutIcon,
-        iconSize: 16,
         iconMessage: exitTooltipMessage,
         phoneCallback: _toEditProfile,
         phoneMessage: profileTooltipMessage,

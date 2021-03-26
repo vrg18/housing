@@ -6,14 +6,15 @@ import 'package:housing/domain/counter_type.dart';
 /// Моковые данные для демо-режима
 
 // Тестовый телефон
-//final String testPhone = '+7962632000';
-final String testPhone = '';
+const String testPhone = '+7962632000';
+//final String testPhone = '';
 
 // Демо-клиент
 final Client demoClient = Client(
   phone: '+79999999999',
   isDemo: true,
 );
+const String demoPinCode = '999999';
 
 // Типы счетчиков
 final List<CounterType> demoTypes = [

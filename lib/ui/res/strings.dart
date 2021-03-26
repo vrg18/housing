@@ -11,6 +11,7 @@ const String inscriptionChangeNumber = 'Поменять номер';
 const String passwordHint = 'Одноразовый пароль';
 const String inscriptionRepeatedPassword = 'Повторить пароль';
 const String enterPress = 'Войти';
+const String enterPressDemo = 'Войти в демо-режиме';
 const String inscriptionAgrees = 'Я согласен с ';
 const String inscriptionByUserAgreement = 'Пользовательским соглашением';
 const String userAgreementUrl = 'https://ya.ru';

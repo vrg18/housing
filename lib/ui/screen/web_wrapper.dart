@@ -14,9 +14,10 @@ class WebWrapper extends StatelessWidget {
       builder: (context, constraints) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 500),
-          padding: constraints.maxWidth < widthWebWrapper || constraints.maxHeight < heightWebWrapper
-              ? EdgeInsets.zero
-              : const EdgeInsets.all(basicBorderSize),
+          padding: EdgeInsets.symmetric(
+            horizontal: constraints.maxWidth < widthWebWrapper ? 0 : basicBorderSize,
+            vertical: constraints.maxHeight < heightWebWrapper ? 0 : basicBorderSize,
+          ),
           color: wrapperBackgroundColor,
           child: Center(
             child: ClipRRect(

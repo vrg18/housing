@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:housing/data/provider/phone_number.dart';
+import 'package:housing/data/res/mocks.dart';
 import 'package:housing/data/res/properties.dart';
 import 'package:housing/data/service/client_service.dart';
 import 'package:housing/ui/res/colors.dart';
+import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
@@ -35,16 +37,18 @@ class _LoginSecondState extends State<LoginSecond> {
   late bool _isAgrees;
   late bool _isLoadingLogin;
   late bool _isLoadingPinCode;
+  late bool _isDemo;
 
   @override
   void initState() {
     super.initState();
-    _passwordController = TextEditingController();
+    _isDemo = context.read<PhoneNumber>().phoneNumber == demoClient.phone;
+    _passwordController = TextEditingController(text: _isDemo ? demoPinCode : '');
     _timerController = CountdownTimerController(
       endTime: DateTime.now().millisecondsSinceEpoch + countdownTimerRepeatedPinCode,
       onEnd: onEndTimer,
     );
-    _isIntroduced = false;
+    _isIntroduced = _isDemo;
     _timerIsRunning = true;
     _isAgrees = false;
     _isLoadingLogin = false;
@@ -64,40 +68,25 @@ class _LoginSecondState extends State<LoginSecond> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(
-              child: AutoSizeText(
-                inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
-                maxLines: 2,
-              ),
-            ),
-            //const SizedBox(width: basicBorderSize),
-            // Flexible(
-            //   flex: 1,
-            //   child: ElevatedButton(
-            //     child: Text(
-            //       inscriptionChangeNumber,
-            //       style: activeWhiteButtonLabelStyle,
-            //       textAlign: TextAlign.center,
-            //     ),
-            //     style: bigWhiteButtonStyle,
-            //     onPressed: () {
-            //       FocusScope.of(context).unfocus();
-            //       widget.tabController.index = 0;
-            //     },
-            //   ),
-            // ),
             Tooltip(
               message: inscriptionChangeNumber,
               child: IconButton(
                 iconSize: 32,
                 icon: Icon(
-                  Icons.replay,
+                  backIcon,
                   color: basicBlue,
                 ),
                 onPressed: () {
                   FocusScope.of(context).unfocus();
                   widget.tabController.index = 0;
                 },
+              ),
+            ),
+            Flexible(
+              child: AutoSizeText(
+                inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
+                maxLines: 2,
+                textAlign: TextAlign.right,
               ),
             )
           ],
@@ -112,6 +101,7 @@ class _LoginSecondState extends State<LoginSecond> {
                 child: Stack(
                   children: [
                     TextField(
+                      enabled: !_isDemo,
                       controller: _passwordController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
@@ -161,7 +151,7 @@ class _LoginSecondState extends State<LoginSecond> {
                                           Icons.replay,
                                           color: basicBlue,
                                         ),
-                                        onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
+                                        onPressed: _isLoadingLogin || _isDemo ? null : () => _repeatPinCodeRequest(),
                                       ),
                                     ),
                         ),
@@ -171,31 +161,6 @@ class _LoginSecondState extends State<LoginSecond> {
                 ),
               ),
             ),
-            // const SizedBox(width: basicBorderSize),
-            // Flexible(
-            //   flex: 1,
-            //   child: _timerIsRunning
-            //       ? SizedBox(
-            //           height: heightOfButtonsAndTextFields * (context.read<Web>().isWeb ? 0.83 : 1),
-            //           child: Center(
-            //             child: CountdownTimer(
-            //               controller: _timerController,
-            //               widgetBuilder: (_, time) => TimerFormatTemplate(time!),
-            //             ),
-            //           ),
-            //         )
-            //       : ElevatedButton(
-            //           child: _isLoadingPinCode
-            //               ? LoginProgressIndicator(basicBlue)
-            //               : Text(
-            //                   inscriptionRepeatedPassword,
-            //                   style: activeWhiteButtonLabelStyle,
-            //                   textAlign: TextAlign.center,
-            //                 ),
-            //           style: context.read<Web>().isWeb ? bigWhiteButtonStyle : bigWhiteButtonStyle,
-            //           onPressed: _isLoadingLogin ? null : () => _repeatPinCodeRequest(),
-            //         ),
-            // ),
           ],
         ),
         const SizedBox(height: 20),
@@ -248,7 +213,7 @@ class _LoginSecondState extends State<LoginSecond> {
           child: _isLoadingLogin
               ? LoginProgressIndicator(Colors.white)
               : Text(
-                  enterPress,
+                  _isDemo ? enterPressDemo : enterPress,
                   style: _isIntroduced && _isAgrees ? activeButtonLabelStyle : inactiveButtonLabelStyle,
                 ),
           onPressed:
@@ -291,15 +256,19 @@ class _LoginSecondState extends State<LoginSecond> {
 
   // Логинимся с пин-кодом и переходим на главную страницу приложения
   Future<void> _gotoNextScreen() async {
-    setState(() => _isLoadingLogin = true);
-    FocusScope.of(context).unfocus();
-    String error = await context.read<ClientService>().authentication(
-          context.read<PhoneNumber>().phoneNumber,
-          _passwordController.text,
-        );
-    if (error.isNotEmpty) {
-      setState(() => _isLoadingLogin = false);
-      popupMessage(context, error);
+    if (!_isDemo) {
+      setState(() => _isLoadingLogin = true);
+      FocusScope.of(context).unfocus();
+      String error = await context.read<ClientService>().authentication(
+            context.read<PhoneNumber>().phoneNumber,
+            _passwordController.text,
+          );
+      if (error.isNotEmpty) {
+        setState(() => _isLoadingLogin = false);
+        popupMessage(context, error);
+      } else {
+        widget.tabController.index = 2;
+      }
     } else {
       widget.tabController.index = 2;
     }

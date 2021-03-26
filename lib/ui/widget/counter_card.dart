@@ -8,10 +8,10 @@ import 'package:housing/ui/screen/web_wrapper.dart';
 import 'package:housing/ui/widget/popup_message.dart';
 import 'package:provider/provider.dart';
 
-class CounterCardElevated extends StatelessWidget {
+class CounterCard extends StatelessWidget {
   final Counter counter;
 
-  CounterCardElevated(this.counter);
+  CounterCard(this.counter);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class CounterCardElevated extends StatelessWidget {
                 Text(
                   counter.title,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  maxLines: 3,
                   style: counterNameStyle,
                 ),
                 Text(

@@ -9,4 +9,5 @@ const double heightOfButtonsAndTextFields = 48; // высота кнопок и 
 const double contentHeightLoginFirst = 500; // высота содержимого первого экрана логина
 const double contentHeightLoginSecond = 700; // высота содержимого второго экрана логина
 const double appBarHeight = 36; // высота верхнего бара
+const double appBarIconSize = 24; // размер иконки в верхнем баре
 const double tabBarHeight = 36; // высота TabBar

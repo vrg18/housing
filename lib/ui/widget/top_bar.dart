@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 class TopBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback mainCallback;
   final IconData mainIcon;
-  final double? iconSize;
   final String? iconMessage;
   final VoidCallback? phoneCallback;
   final String? phoneMessage;
@@ -17,7 +16,6 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
   TopBar({
     required this.mainCallback,
     required this.mainIcon,
-    this.iconSize,
     this.iconMessage,
     this.phoneCallback,
     this.phoneMessage,
@@ -50,7 +48,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
                     child: InkWell(
                       child: Icon(
                         mainIcon,
-                        size: iconSize ?? 32,
+                        size: appBarIconSize,
                       ),
                       onTap: () => mainCallback(),
                     ),

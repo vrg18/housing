@@ -9,7 +9,7 @@ import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
 import 'package:housing/ui/screen/counter_new.dart';
 import 'package:housing/ui/screen/web_wrapper.dart';
-import 'package:housing/ui/widget/counter_card_elevated.dart';
+import 'package:housing/ui/widget/counter_card.dart';
 import 'package:housing/ui/widget/popup_message.dart';
 import 'package:housing/ui/widget/progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -32,12 +32,12 @@ class CountersManager extends StatelessWidget {
                 mainAxisSpacing: basicBorderSize,
                 childAspectRatio: 2,
                 children:
-                    context.read<CounterService>().counters.asMap().values.map((e) => CounterCardElevated(e)).toList(),
+                    context.read<CounterService>().counters.asMap().values.map((e) => CounterCard(e)).toList(),
               ),
             )
           : LoginProgressIndicator(basicBlue),
       floatingActionButton: SizedBox(
-        width: 100,
+        width: 110,
         child: ElevatedButton(
           child: Text(
             addCounterLabel,

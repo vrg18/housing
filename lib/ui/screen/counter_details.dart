@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:housing/domain/counter.dart';
 import 'package:housing/ui/res/colors.dart';
+import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
@@ -66,7 +67,7 @@ class _CounterDetailsState extends State<CounterDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TopBar(
-        mainIcon: Icons.chevron_left,
+        mainIcon: backIcon,
         mainCallback: _returnToPreviousScreen,
         iconMessage: backTooltipMessage,
       ),

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/domain/counter.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
+import 'package:housing/ui/screen/web_wrapper.dart';
 import 'package:housing/ui/widget/decoration_of_text_field.dart';
 import 'package:housing/ui/widget/top_bar.dart';
+import 'package:provider/provider.dart';
+
+import 'counter_history.dart';
 
 /// Страница деталей счетчика и ввода новых показаний
 class CounterDetails extends StatefulWidget {
@@ -155,19 +160,26 @@ class _CounterDetailsState extends State<CounterDetails> {
                   backgroundColor: _isActiveSaveButton() ? null : inactiveBackgroundColor,
                 ),
               ),
-              const SizedBox(height: 16),
-              TextButton(
-                child: Text(
-                  historyValueLabel,
-                  style: activeButtonUnderlineLabelStyle,
-                ),
-                style: bigWhiteButtonStyle,
-                onPressed: () => {},
-              ),
             ],
           ),
         ),
       ),
+      floatingActionButton: SizedBox(
+        width: 110,
+        child: ElevatedButton(
+          child: Text(
+            counterHistoryLabel,
+            textAlign: TextAlign.center,
+          ),
+          style: blueButtonStyle,
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => context.read<Web>().isWeb ? WebWrapper(CounterHistory()) : CounterHistory())),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
     );
   }
 

@@ -1,45 +1,44 @@
 import 'package:dio/dio.dart';
 import 'package:housing/data/res/properties.dart';
-import 'package:housing/domain/counter.dart';
 import 'package:housing/domain/indication.dart';
 
-class CounterRepository {
+class IndicationRepository {
   final Dio _dio = dioWithOptionsAndLogger;
 
-  dynamic getCountersRequest(String token) async {
+  dynamic getIndicationRequest(String token) async {
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
-      var response = await _dio.get(apiMeter);
-      return _getCountersContinueOk(response);
+      var response = await _dio.get(apiValues);
+      return _getIndicationContinueOk(response);
     } on DioError catch (e) {
       return _continueException(e);
     }
   }
 
-  dynamic postCounterRequest(String token, Counter counter) async {
+  dynamic postIndicationRequest(String token, Indication indication) async {
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
       var response = await _dio.post(
-        apiMeter,
-        data: counter.toJson(),
+        apiValues,
+        data: indication.toJson(),
       );
-      return _postCounterContinueOk(response);
+      return _postIndicationContinueOk(response);
     } on DioError catch (e) {
       return _continueException(e);
     }
   }
 
-  dynamic _getCountersContinueOk(response) {
+  dynamic _getIndicationContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((e) => Counter.fromJson(e));
+      return (response.data as List<dynamic>).map((i) => Indication.fromJson(i));
     } else {
       return response.statusMessage;
     }
   }
 
-  dynamic _postCounterContinueOk(response) {
+  dynamic _postIndicationContinueOk(response) {
     if (response.statusCode < 300) {
-      return Counter.fromJson(response.data);
+      return '';
     } else {
       return response.statusMessage;
     }

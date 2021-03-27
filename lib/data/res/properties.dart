@@ -40,5 +40,5 @@ final Map<String, List<dynamic>> matchOfTypesIconsAndUnits = {
   'хол': [waterIcon, basicBlue],
   'гор': [waterIcon, Colors.red],
   'газ': [gasIcon, Colors.lightBlueAccent],
-  'электр': [electricityIcon, Colors.yellow[700]],
+  'электр': [electricityIcon, Colors.yellow[600]],
 };

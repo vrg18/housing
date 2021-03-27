@@ -144,7 +144,7 @@ class _CounterNewState extends State<CounterNew> {
           _selectedValues[selected] = value!;
           _setIsCounterReady();
         },
-        items: items.asMap().values.map((e) => DropdownMenuItem(value: e, child: _dropdownMenuItem(e))).toList(),
+        items: items.map((e) => DropdownMenuItem(value: e, child: _dropdownMenuItem(e))).toList(),
       ),
     );
   }

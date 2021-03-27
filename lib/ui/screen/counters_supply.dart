@@ -15,7 +15,7 @@ class CountersSupply extends StatelessWidget {
         crossAxisSpacing: basicBorderSize,
         mainAxisSpacing: basicBorderSize,
         childAspectRatio: 2,
-        children: context.read<CounterService>().counters.asMap().values.map((e) => CounterCard(e)).toList(),
+        children: context.read<CounterService>().counters.map((e) => CounterCard(e)).toList(),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:housing/data/repository/address_repository.dart';
 import 'package:housing/data/repository/counter_repository.dart';
 import 'package:housing/data/repository/counter_type_repository.dart';
+import 'package:housing/data/repository/indication_repository.dart';
 import 'package:housing/data/res/mocks.dart';
 import 'package:housing/data/res/properties.dart';
 import 'package:housing/domain/address.dart';
@@ -16,13 +17,16 @@ class CounterService with ChangeNotifier {
   CounterRepository _counterRepository = CounterRepository();
   CounterTypeRepository _counterTypeRepository = CounterTypeRepository();
   AddressRepository _addressRepository = AddressRepository();
+  IndicationRepository _indicationRepository = IndicationRepository();
   bool _isTypeLoaded = false;
   bool _isAddressLoaded = false;
   bool isAllLoaded = false;
+  bool _isHistoryLoaded = false;
   late Client _currentClient;
   late List<Counter> counters;
   late List<CounterType> counterTypes;
   late List<Address> addresses;
+  late List<Indication> _indications;
 
   // Получить список счетчиков
   Future<String> getCounters(Client client) async {
@@ -39,7 +43,7 @@ class CounterService with ChangeNotifier {
     }
 
     if (_currentClient.isDemo) {
-      counters = List.from(demoCounters.getRange(0, demoCounters.length));
+      counters = List.from(demoCounters);
     } else {
       dynamic returned = await _counterRepository.getCountersRequest(_currentClient.token!);
       if (returned is Iterable<Counter>) {
@@ -75,10 +79,44 @@ class CounterService with ChangeNotifier {
     }
   }
 
-  // Создать новый счетчик
+  // Создать новый адрес
   void addNewAddress(Address address) {
     addresses.add(address);
     notifyListeners();
+  }
+
+  // Получить список показаний (историю)
+  Future<dynamic> getIndications(int counterId) async {
+    if (!_isHistoryLoaded) {
+      if (_currentClient.isDemo) {
+        _indications.clear();
+        DateTime dt = DateTime.now();
+        counters.forEach((c) => _indications.add(
+              Indication(
+                meter: c.id!,
+                value: c.previousValue!,
+                date: DateTime(dt.year, dt.month - 1, dt.day),
+              ),
+            ));
+      } else {
+        dynamic returned = await _indicationRepository.getIndicationRequest(_currentClient.token!);
+        if (returned is Iterable<Indication>) {
+          _indications = List.from(returned);
+        } else {
+          return returned;
+        }
+      }
+    }
+    _isHistoryLoaded = true;
+
+    Map<DateTime, int> history = {};
+    _indications.forEach((i) {
+      if (i.meter == counterId) {
+        history[i.date!] = i.value;
+      }
+    });
+    notifyListeners();
+    return history;
   }
 
   // Подать новое показание
@@ -88,7 +126,7 @@ class CounterService with ChangeNotifier {
       return incorrectValueMessage;
     }
     int value = valueD.round();
-    counters.asMap().values.forEach((c) {
+    counters.forEach((c) {
       if (c.id == counter.id) {
         c.previousValue = value;
       }
@@ -98,7 +136,7 @@ class CounterService with ChangeNotifier {
     if (_currentClient.isDemo) {
       return '';
     } else {
-      dynamic returned = await _counterRepository.postIndicationRequest(
+      dynamic returned = await _indicationRepository.postIndicationRequest(
           _currentClient.token!,
           Indication(
             meter: counter.id!,
@@ -108,7 +146,7 @@ class CounterService with ChangeNotifier {
     }
   }
 
-  /// Почистить флажки при смене клиента
+  // Почистить флажки при смене клиента
   void serviceClear() {
     isAllLoaded = false;
     _isTypeLoaded = false;
@@ -118,7 +156,7 @@ class CounterService with ChangeNotifier {
   // Получить список типов счетчиков
   Future<String> _getCounterTypes() async {
     if (_currentClient.isDemo) {
-      counterTypes = List.from(demoTypes.getRange(0, demoTypes.length));
+      counterTypes = List.from(demoTypes);
     } else {
       dynamic returned = await _counterTypeRepository.getCounterTypesRequest(_currentClient.token!);
       if (returned is Iterable<CounterType>) {
@@ -135,7 +173,7 @@ class CounterService with ChangeNotifier {
   // Получить список адресов
   Future<String> _getAddresses() async {
     if (_currentClient.isDemo) {
-      addresses = List.from(demoAddresses.getRange(0, demoAddresses.length));
+      addresses = List.from(demoAddresses);
     } else {
       dynamic returned = await _addressRepository.getAddressesRequest(_currentClient.token!);
       if (returned is Iterable<Address>) {
@@ -150,13 +188,13 @@ class CounterService with ChangeNotifier {
 
   // С бэка приходят только ID типов счетчиков, сопоставим с классом CounterType...
   void _fillCounterTypes(List<CounterType> counterTypes) {
-    counters.asMap().values.forEach((c) => c.counterType = _findCounterType(c.type));
+    counters.forEach((c) => c.counterType = _findCounterType(c.type));
   }
 
   // Ищем по типу счетчика (int) тип счетчика (CounterType)
   CounterType? _findCounterType(int type) {
     CounterType? counterType;
-    counterTypes.asMap().values.forEach((t) {
+    counterTypes.forEach((t) {
       if (type == t.id) {
         counterType = t;
       }
@@ -166,7 +204,7 @@ class CounterService with ChangeNotifier {
 
   // С бэка приходят типы счетчиков без иконок, заполняем сами
   void _fillIconsAndUnits() {
-    counterTypes.asMap().values.forEach((t) {
+    counterTypes.forEach((t) {
       matchOfTypesIconsAndUnits.entries.forEach((i) {
         if (t.title.toLowerCase().contains(i.key)) {
           t.icon = i.value[0];

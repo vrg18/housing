@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:housing/data/repository/utils_repository.dart';
 import 'package:housing/data/res/properties.dart';
 import 'package:housing/domain/counter_type.dart';
 
@@ -11,7 +12,7 @@ class CounterTypeRepository {
       var response = await _dio.get(apiMeterTypes);
       return _counterContinueOk(response);
     } on DioError catch (e) {
-      return _continueException(e);
+      return continueException(e);
     }
   }
 
@@ -20,14 +21,6 @@ class CounterTypeRepository {
       return (response.data as List<dynamic>).map((e) => CounterType.fromJson(e));
     } else {
       return response.statusMessage;
-    }
-  }
-
-  String _continueException(DioError error) {
-    if (error.response != null) {
-      return error.response.toString();
-    } else {
-      return error.error;
     }
   }
 }

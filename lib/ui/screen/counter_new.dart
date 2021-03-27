@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/service/counter_service.dart';
@@ -69,8 +70,9 @@ class _CounterNewState extends State<CounterNew> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              AutoSizeText(
                 newCounterLabel,
+                maxLines: 1,
                 style: inputInAccountStyle,
                 textAlign: TextAlign.center,
               ),
@@ -96,8 +98,9 @@ class _CounterNewState extends State<CounterNew> {
                 child: SizedBox(
                   width: 100,
                   child: ElevatedButton(
-                    child: Text(
+                    child: AutoSizeText(
                       addAddressLabel,
+                      maxLines: 2,
                       textAlign: TextAlign.center,
                     ),
                     style: blueButtonStyle,

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/domain/address.dart';
 import 'package:housing/ui/res/colors.dart';
@@ -70,8 +71,9 @@ class _AddressNewState extends State<AddressNew> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              AutoSizeText(
                 newAddressLabel,
+                maxLines: 1,
                 style: inputInAccountStyle,
                 textAlign: TextAlign.center,
               ),

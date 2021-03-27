@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/sizes.dart';
+import 'package:intl/intl.dart';
 
 /// Определения стилей текстов и кнопок, применяемых в приложении
 
 const TextStyle inputInAccountStyle = TextStyle(
-  fontSize: 28,
+  fontSize: 24,
   fontWeight: FontWeight.w600,
 );
 
@@ -26,23 +27,21 @@ final TextStyle activeButtonUnderlineLabelStyle = activeButtonLabelStyle.merge(
   ),
 );
 
-final TextStyle activeWhiteButtonLabelStyle = TextStyle(
-  fontSize: 16,
-  color: basicBlue,
-);
-
 const TextStyle unselectedBarStyle = TextStyle(
   fontSize: 13,
 );
 
 final TextStyle dropdownButtonStyle = TextStyle(fontSize: 16, color: Colors.grey[800]);
 
-final TextStyle currentReadingsCountersStyle = TextStyle(fontSize: 13, color: Colors.grey[800]);
+final TextStyle currentReadingsCountersStyle = TextStyle(
+  fontSize: 13,
+  color: Colors.grey[700],
+);
 
-const TextStyle counterNameStyle = TextStyle(
+final TextStyle counterNameStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w600,
-  color: Colors.black,
+  color: Colors.grey[900],
 );
 
 final TextStyle basicBlueColorText = TextStyle(
@@ -74,3 +73,5 @@ final ButtonStyle rightSmallerWhiteButtonStyle = bigWhiteButtonStyle.merge(
     alignment: Alignment.centerRight,
   ),
 );
+
+final DateFormat dateFormatter = DateFormat('dd/MM/yyyy');

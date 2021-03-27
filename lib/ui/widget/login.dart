@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:housing/data/provider/phone_number.dart';
@@ -34,8 +35,9 @@ class LoginScreen extends StatelessWidget {
               : SizedBox(
                   width: 80,
                   child: ElevatedButton(
-                    child: Text(
+                    child: AutoSizeText(
                       demoModePress,
+                      maxLines: 2,
                       textAlign: TextAlign.center,
                     ),
                     onPressed: () => _gotoDemoNextScreen(context),

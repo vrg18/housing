@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:housing/data/repository/utils_repository.dart';
 import 'package:housing/data/res/properties.dart';
 import 'package:housing/domain/client.dart';
 
@@ -13,7 +14,7 @@ class ClientRepository {
       );
       return _authContinueOk('', response, false);
     } on DioError catch (e) {
-      return _continueException(e);
+      return continueException(e);
     }
   }
 
@@ -25,7 +26,7 @@ class ClientRepository {
       );
       return _authContinueOk(phone, response, true);
     } on DioError catch (e) {
-      return _continueException(e);
+      return continueException(e);
     }
   }
 
@@ -42,14 +43,6 @@ class ClientRepository {
       }
     } else {
       return response.statusMessage;
-    }
-  }
-
-  String _continueException(DioError error) {
-    if (error.response != null) {
-      return error.response.toString();
-    } else {
-      return error.error;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/service/client_service.dart';
@@ -18,9 +19,7 @@ import 'package:provider/provider.dart';
 class CountersManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (!context.read<CounterService>().isAllLoaded) {
-      _weReceiveCounters(context);
-    }
+    _weReceiveCounters(context);
 
     return Scaffold(
       body: context.watch<CounterService>().isAllLoaded
@@ -31,16 +30,16 @@ class CountersManager extends StatelessWidget {
                 crossAxisSpacing: basicBorderSize,
                 mainAxisSpacing: basicBorderSize,
                 childAspectRatio: 2,
-                children:
-                    context.read<CounterService>().counters.map((e) => CounterCard(e)).toList(),
+                children: context.read<CounterService>().counters.map((e) => CounterCard(e)).toList(),
               ),
             )
           : LoginProgressIndicator(basicBlue),
       floatingActionButton: SizedBox(
         width: 110,
         child: ElevatedButton(
-          child: Text(
+          child: AutoSizeText(
             addCounterLabel,
+            maxLines: 2,
             textAlign: TextAlign.center,
           ),
           style: blueButtonStyle,
@@ -58,9 +57,11 @@ class CountersManager extends StatelessWidget {
   }
 
   Future<void> _weReceiveCounters(BuildContext context) async {
-    String error = await context.read<CounterService>().getCounters(context.read<ClientService>().client);
-    if (error.isNotEmpty) {
-      popupMessage(context, error);
+    if (!context.read<CounterService>().isAllLoaded) {
+      String error = await context.read<CounterService>().getCounters(context.read<ClientService>().client);
+      if (error.isNotEmpty) {
+        popupMessage(context, error);
+      }
     }
   }
 

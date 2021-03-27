@@ -86,7 +86,7 @@ class _LoginSecondState extends State<LoginSecond> {
               child: AutoSizeText(
                 inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
                 maxLines: 2,
-                minFontSize: 10,
+                minFontSize: 9,
                 textAlign: TextAlign.right,
               ),
             ),
@@ -129,7 +129,7 @@ class _LoginSecondState extends State<LoginSecond> {
                       },
                     ),
                     Positioned(
-                      right: 1,
+                      right: 2,
                       child: SizedBox(
                         width: heightOfButtonsAndTextFields,
                         height: heightOfButtonsAndTextFields,
@@ -206,7 +206,7 @@ class _LoginSecondState extends State<LoginSecond> {
                   ],
                 ),
                 maxLines: 2,
-                minFontSize: 10,
+                minFontSize: 9,
               ),
             ),
           ],

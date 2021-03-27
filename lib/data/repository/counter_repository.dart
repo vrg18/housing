@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:housing/data/repository/utils_repository.dart';
 import 'package:housing/data/res/properties.dart';
 import 'package:housing/domain/counter.dart';
-import 'package:housing/domain/indication.dart';
 
 class CounterRepository {
   final Dio _dio = dioWithOptionsAndLogger;
@@ -12,7 +12,7 @@ class CounterRepository {
       var response = await _dio.get(apiMeter);
       return _getCountersContinueOk(response);
     } on DioError catch (e) {
-      return _continueException(e);
+      return continueException(e);
     }
   }
 
@@ -25,7 +25,7 @@ class CounterRepository {
       );
       return _postCounterContinueOk(response);
     } on DioError catch (e) {
-      return _continueException(e);
+      return continueException(e);
     }
   }
 
@@ -42,14 +42,6 @@ class CounterRepository {
       return Counter.fromJson(response.data);
     } else {
       return response.statusMessage;
-    }
-  }
-
-  String _continueException(DioError error) {
-    if (error.response != null) {
-      return error.response.toString();
-    } else {
-      return error.error;
     }
   }
 }

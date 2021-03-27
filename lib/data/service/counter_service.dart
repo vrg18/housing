@@ -21,12 +21,12 @@ class CounterService with ChangeNotifier {
   bool _isTypeLoaded = false;
   bool _isAddressLoaded = false;
   bool isAllLoaded = false;
-  bool _isHistoryLoaded = false;
+  bool isHistoryLoaded = false;
   late Client _currentClient;
   late List<Counter> counters;
   late List<CounterType> counterTypes;
   late List<Address> addresses;
-  late List<Indication> _indications;
+  late List<Indication> indications;
 
   // Получить список счетчиков
   Future<String> getCounters(Client client) async {
@@ -86,68 +86,65 @@ class CounterService with ChangeNotifier {
   }
 
   // Получить список показаний (историю)
-  Future<dynamic> getIndications(int counterId) async {
-    if (!_isHistoryLoaded) {
-      if (_currentClient.isDemo) {
-        _indications.clear();
-        DateTime dt = DateTime.now();
-        counters.forEach((c) => _indications.add(
-              Indication(
-                meter: c.id!,
-                value: c.previousValue!,
-                date: DateTime(dt.year, dt.month - 1, dt.day),
-              ),
-            ));
+  Future<dynamic> getIndications() async {
+    if (_currentClient.isDemo) {
+      DateTime dt = DateTime.now();
+      indications = List.from(counters.map(
+        (c) => Indication(
+          meter: c.id!,
+          value: c.previousValue!,
+          date: DateTime(dt.year, dt.month - 1, dt.day),
+        ),
+      ));
+    } else {
+      dynamic returned = await _indicationRepository.getIndicationRequest(_currentClient.token!);
+      if (returned is Iterable<Indication>) {
+        indications = List.from(returned);
       } else {
-        dynamic returned = await _indicationRepository.getIndicationRequest(_currentClient.token!);
-        if (returned is Iterable<Indication>) {
-          _indications = List.from(returned);
-        } else {
-          return returned;
-        }
+        return returned;
       }
     }
-    _isHistoryLoaded = true;
+    isHistoryLoaded = true;
+    return '';
+  }
 
-    Map<DateTime, int> history = {};
-    _indications.forEach((i) {
-      if (i.meter == counterId) {
-        history[i.date!] = i.value;
-      }
-    });
-    notifyListeners();
-    return history;
+  // Получить список показаний (историю) одного счетчика
+  List<Indication> getIndicationsOne(int counterId) {
+    List<Indication> indicationsOne = List.from(indications.where((e) => e.meter == counterId).toList());
+    indicationsOne.sort((a, b) => b.date!.compareTo(a.date!));
+    return indicationsOne;
   }
 
   // Подать новое показание
   Future<String> addNewIndication(Counter counter, String valueS) async {
-    double? valueD = double.tryParse(valueS);
-    if (valueD == null) {
+    int? value = stringToInt(valueS);
+    if (value == null) {
       return incorrectValueMessage;
     }
-    int value = valueD.round();
     counters.forEach((c) {
       if (c.id == counter.id) {
         c.previousValue = value;
       }
     });
+    Indication indication = Indication(
+      meter: counter.id!,
+      value: value,
+      date: DateTime.now(),
+    );
+    indications.add(indication);
     notifyListeners();
 
     if (_currentClient.isDemo) {
       return '';
     } else {
-      dynamic returned = await _indicationRepository.postIndicationRequest(
-          _currentClient.token!,
-          Indication(
-            meter: counter.id!,
-            value: value,
-          ));
+      dynamic returned = await _indicationRepository.postIndicationRequest(_currentClient.token!, indication);
       return returned;
     }
   }
 
   // Почистить флажки при смене клиента
   void serviceClear() {
+    isHistoryLoaded = false;
     isAllLoaded = false;
     _isTypeLoaded = false;
     _isAddressLoaded = false;
@@ -212,5 +209,14 @@ class CounterService with ChangeNotifier {
         }
       });
     });
+  }
+
+  // Строка в int
+  int? stringToInt(String valueS) {
+    double? valueD = double.tryParse(valueS);
+    if (valueD == null) {
+      return null;
+    }
+    return valueD.round();
   }
 }

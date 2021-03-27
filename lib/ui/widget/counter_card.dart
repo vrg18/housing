@@ -46,6 +46,8 @@ class CounterCard extends StatelessWidget {
                   counter.previousValue != null
                       ? '${counter.previousValue.toString()} ${counter.counterType!.measure}'
                       : '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: currentReadingsCountersStyle,
                 ),
               ],

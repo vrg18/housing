@@ -86,16 +86,16 @@ class _LoginSecondState extends State<LoginSecond> {
               child: AutoSizeText(
                 inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
                 maxLines: 2,
+                minFontSize: 10,
                 textAlign: TextAlign.right,
               ),
-            )
+            ),
           ],
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 20),
         Row(
           children: [
             Flexible(
-              flex: 2,
               child: SizedBox(
                 height: heightOfButtonsAndTextFields,
                 child: Stack(
@@ -129,7 +129,7 @@ class _LoginSecondState extends State<LoginSecond> {
                       },
                     ),
                     Positioned(
-                      right: 0,
+                      right: 1,
                       child: SizedBox(
                         width: heightOfButtonsAndTextFields,
                         height: heightOfButtonsAndTextFields,
@@ -165,15 +165,18 @@ class _LoginSecondState extends State<LoginSecond> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Checkbox(
-              activeColor: basicBlue,
-              value: _isAgrees,
-              onChanged: _isIntroduced ? (_) => setState(() => _isAgrees = !_isAgrees) : null,
+            Transform.scale(
+              scale: 1.25,
+              child: Checkbox(
+                activeColor: basicBlue,
+                value: _isAgrees,
+                onChanged: _isIntroduced ? (_) => setState(() => _isAgrees = !_isAgrees) : null,
+              ),
             ),
+            const SizedBox(width: 10),
             Flexible(
-              child: RichText(
-                maxLines: 2,
-                text: TextSpan(
+              child: AutoSizeText.rich(
+                TextSpan(
                   style: TextStyle(fontSize: 13),
                   children: [
                     TextSpan(
@@ -202,6 +205,8 @@ class _LoginSecondState extends State<LoginSecond> {
                     ),
                   ],
                 ),
+                maxLines: 2,
+                minFontSize: 10,
               ),
             ),
           ],

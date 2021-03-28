@@ -85,7 +85,7 @@ class _LoginSecondState extends State<LoginSecond> {
             Flexible(
               child: AutoSizeText(
                 inscriptionEnterPassword + context.watch<PhoneNumber>().phoneNumber,
-                maxLines: 2,
+                maxLines: 3,
                 minFontSize: 9,
                 textAlign: TextAlign.right,
               ),
@@ -96,8 +96,9 @@ class _LoginSecondState extends State<LoginSecond> {
         Row(
           children: [
             Flexible(
-              child: SizedBox(
+              child: Container(
                 height: heightOfButtonsAndTextFields,
+                padding: const EdgeInsets.only(right: 1),
                 child: Stack(
                   children: [
                     TextField(
@@ -205,7 +206,7 @@ class _LoginSecondState extends State<LoginSecond> {
                     ),
                   ],
                 ),
-                maxLines: 2,
+                maxLines: 3,
                 minFontSize: 9,
               ),
             ),

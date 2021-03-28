@@ -24,11 +24,7 @@ class LoginScreen extends StatelessWidget {
         builder: (_, isKeyboardVisible) => Scaffold(
           body: Padding(
             padding: const EdgeInsets.all(basicBorderSize),
-            child: !isKeyboardVisible || tabController.index == 0 && height > (contentHeightLoginFirst + keyboardHeight)
-                ? _checkForLowScreens(context, height)
-                : SingleChildScrollView(
-              child: _bodyLoginScreen(context),
-            ),
+            child: _checkForLowScreens(context, height, isKeyboardVisible),
           ),
           floatingActionButton: isKeyboardVisible || tabController.index != 0
               ? null
@@ -49,9 +45,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget _checkForLowScreens(BuildContext context, double height) {
-    return tabController.index == 0 && height < contentHeightLoginFirst ||
-            tabController.index == 1 && height < contentHeightLoginSecond
+  Widget _checkForLowScreens(BuildContext context, double height, bool isKeyboardVisible) {
+    return tabController.index == 0 && height < contentHeightLoginFirst
+            || tabController.index == 1 && height < contentHeightLoginSecond
         ? SingleChildScrollView(
             child: _bodyLoginScreen(context),
           )

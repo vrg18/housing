@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/mocks.dart';
 import 'package:housing/data/res/properties.dart';
@@ -98,7 +99,9 @@ class _LoginSecondState extends State<LoginSecond> {
             Flexible(
               child: Container(
                 height: heightOfButtonsAndTextFields,
-                padding: const EdgeInsets.only(right: 1),
+                padding: EdgeInsets.only(right: context.read<Web>().isWeb ? 2 : 0), // на небольших экранах в Web-версии
+                                                                                    // пропадал правый край рамки,
+                                                                                    // пришлось сдвинуть на 2
                 child: Stack(
                   children: [
                     TextField(

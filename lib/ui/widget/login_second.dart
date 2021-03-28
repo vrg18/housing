@@ -130,7 +130,7 @@ class _LoginSecondState extends State<LoginSecond> {
                       },
                     ),
                     Positioned(
-                      right: 2,
+                      right: 0,
                       child: SizedBox(
                         width: heightOfButtonsAndTextFields,
                         height: heightOfButtonsAndTextFields,

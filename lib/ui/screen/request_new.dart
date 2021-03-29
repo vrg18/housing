@@ -11,7 +11,7 @@ import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
-import 'package:housing/ui/screen/web_wrapper.dart';
+import 'package:housing/ui/widget/add_address_button.dart';
 import 'package:housing/ui/widget/decoration_of_text_field.dart';
 import 'package:housing/ui/widget/top_bar.dart';
 import 'package:provider/provider.dart';
@@ -46,9 +46,8 @@ class _RequestNewState extends State<RequestNew> {
   @override
   void initState() {
     super.initState();
-    if (context.read<CounterService>().addresses.length == 1) {
-      _address = context.read<CounterService>().addresses[0];
-    }
+    _address =
+        context.read<CounterService>().addresses.length == 1 ? context.read<CounterService>().addresses[0] : null;
     _addressFocus = FocusNode();
     _addressFocus.addListener(() => setState(() {}));
     _surnameController = TextEditingController();
@@ -104,7 +103,7 @@ class _RequestNewState extends State<RequestNew> {
         iconMessage: backTooltipMessage,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(basicBorderSize),
+        padding: const EdgeInsets.only(top: basicBorderSize, left: basicBorderSize, bottom: basicBorderSize),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -115,34 +114,47 @@ class _RequestNewState extends State<RequestNew> {
                 style: inputInAccountStyle,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              _customDropDownButton(),
-              const SizedBox(height: 8),
-              _addAddressButton(),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
+              SizedBox(
+                height: heightOfCustomDropdownButton,
+                child: Padding(
+                  padding: EdgeInsets.only(right: context.read<Web>().isWeb ? basicBorderSize : basicBorderSize / 2),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _customDropDownButton(),
+                      AddAddressButton(_returnAddAddress),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: basicBorderSize),
               _customTextField(_surnameController, _surnameFocus, _nameFocus, surnameLabel, false, null),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
               _customTextField(_nameController, _nameFocus, _patronymicFocus, nameLabel, false, null),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
               _customTextField(_patronymicController, _patronymicFocus, _phoneFocus, patronymicLabel, false, null),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
               _customTextField(_phoneController, _phoneFocus, _emailFocus, phoneLabel, false, TextInputType.phone),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
               _customTextField(
                   _emailController, _emailFocus, _subjectFocus, emailLabel, false, TextInputType.emailAddress),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
               _customTextField(_subjectController, _subjectFocus, _textFocus, subjectLabel, false, null),
-              const SizedBox(height: 16),
+              const SizedBox(height: basicBorderSize),
               _customTextField(_textController, _textFocus, null, textLabel, true, TextInputType.multiline),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                child: Text(
-                  saveLabelButton,
-                  style: _isRequestReady ? activeButtonLabelStyle : inactiveButtonLabelStyle,
-                ),
-                onPressed: _isRequestReady ? () => _gotoSaveRequest() : null,
-                style: TextButton.styleFrom(
-                  backgroundColor: _isRequestReady ? null : inactiveBackgroundColor,
+              const SizedBox(height: basicBorderSize),
+              Padding(
+                padding: const EdgeInsets.only(right: basicBorderSize),
+                child: ElevatedButton(
+                  child: Text(
+                    saveLabelButton,
+                    style: _isRequestReady ? activeButtonLabelStyle : inactiveButtonLabelStyle,
+                  ),
+                  onPressed: _isRequestReady ? () => _gotoSaveRequest() : null,
+                  style: TextButton.styleFrom(
+                    backgroundColor: _isRequestReady ? null : inactiveBackgroundColor,
+                  ),
                 ),
               ),
             ],
@@ -153,8 +165,7 @@ class _RequestNewState extends State<RequestNew> {
   }
 
   Widget _customDropDownButton() {
-    return SizedBox(
-      height: 60,
+    return Flexible(
       child: DropdownButtonFormField<Address>(
         value: _address,
         focusNode: _addressFocus,
@@ -172,37 +183,16 @@ class _RequestNewState extends State<RequestNew> {
         items: context
             .read<CounterService>()
             .addresses
-            .map((a) => DropdownMenuItem(value: a, child: Text(a.toString())))
+            .map((address) => DropdownMenuItem(value: address, child: Text(address.toString())))
             .toList(),
-      ),
-    );
-  }
-
-  Widget _addAddressButton() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: SizedBox(
-        width: 100,
-        child: ElevatedButton(
-          child: AutoSizeText(
-            addAddressLabel,
-            maxLines: 2,
-            textAlign: TextAlign.center,
-          ),
-          style: blueButtonStyle,
-          onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => context.read<Web>().isWeb ? WebWrapper(AddressNew()) : AddressNew()))
-              .then((value) => _gotoSaveAddress(context, value)),
-        ),
       ),
     );
   }
 
   Widget _customTextField(TextEditingController controller, FocusNode currentFocus, FocusNode? nextFocus, String label,
       bool multiLine, TextInputType? inputType) {
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.only(right: basicBorderSize),
       height: multiLine ? heightOfButtonsAndTextFields * 3 : heightOfButtonsAndTextFields,
       child: TextField(
         controller: controller,
@@ -227,6 +217,7 @@ class _RequestNewState extends State<RequestNew> {
         _nameController.text.isNotEmpty &&
         _phoneController.text.isNotEmpty &&
         _subjectController.text.isNotEmpty &&
+        _textController.text.isNotEmpty &&
         (_emailController.text.isEmpty ||
             _emailController.text.isNotEmpty && EmailValidator.validate(_emailController.text, false, false)));
   }
@@ -253,11 +244,9 @@ class _RequestNewState extends State<RequestNew> {
     Navigator.pop(context, null);
   }
 
-  // Сохранить введенный новый адрес
-  void _gotoSaveAddress(BuildContext context, dynamic value) {
-    if (value != null && value is Address) {
-      context.read<CounterService>().addNewAddress(value);
-      setState(() => _address = value);
-    }
+  // Колл-бэк из кнопки добавления нового адреса
+  void _returnAddAddress(Address address) {
+    _address = address;
+    _setIsRequestReady();
   }
 }

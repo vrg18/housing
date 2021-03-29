@@ -35,7 +35,7 @@ class RequestRepository {
 
   dynamic _getRequestsContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((r) => Request.fromJson(r));
+      return (response.data as List<dynamic>).map((requestJson) => Request.fromJson(requestJson));
     } else {
       return response.statusMessage;
     }

@@ -20,7 +20,7 @@ class AddressRepository {
 
   dynamic _counterContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((e) => Address.fromJson(e));
+      return (response.data as List<dynamic>).map((addressJson) => Address.fromJson(addressJson));
     } else {
       return response.statusMessage;
     }

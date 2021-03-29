@@ -30,7 +30,7 @@ class CountersManager extends StatelessWidget {
                 crossAxisSpacing: basicBorderSize,
                 mainAxisSpacing: basicBorderSize,
                 childAspectRatio: 2,
-                children: context.read<CounterService>().counters.map((c) => CounterCard(c)).toList(),
+                children: context.read<CounterService>().counters.map((counter) => CounterCard(counter)).toList(),
               ),
             )
           : LoginProgressIndicator(basicBlue),

@@ -89,13 +89,18 @@ class CounterService with ChangeNotifier {
   Future<dynamic> getIndications() async {
     if (_currentClient.isDemo) {
       DateTime dt = DateTime.now();
-      indications = List.from(counters.map(
-        (c) => Indication(
-          meter: c.id!,
-          value: c.previousValue!,
-          date: DateTime(dt.year, dt.month - 1, dt.day),
-        ),
-      ));
+      indications = [];
+      counters.forEach(
+        (counter) {
+          if (counter.previousValue != null) {
+            indications.add(Indication(
+              meter: counter.id!,
+              value: counter.previousValue!,
+              date: DateTime(dt.year, dt.month - 1, dt.day),
+            ));
+          }
+        },
+      );
     } else {
       dynamic returned = await _indicationRepository.getIndicationRequest(_currentClient.token!);
       if (returned is Iterable<Indication>) {
@@ -121,9 +126,9 @@ class CounterService with ChangeNotifier {
     if (value == null) {
       return incorrectValueMessage;
     }
-    counters.forEach((c) {
-      if (c.id == counter.id) {
-        c.previousValue = value;
+    counters.forEach((countersElement) {
+      if (countersElement.id == counter.id) {
+        countersElement.previousValue = value;
       }
     });
     Indication indication = Indication(
@@ -185,15 +190,15 @@ class CounterService with ChangeNotifier {
 
   // С бэка приходят только ID типов счетчиков, сопоставим с классом CounterType...
   void _fillCounterTypes(List<CounterType> counterTypes) {
-    counters.forEach((c) => c.counterType = _findCounterType(c.type));
+    counters.forEach((counter) => counter.counterType = _findCounterType(counter.type));
   }
 
   // Ищем по типу счетчика (int) тип счетчика (CounterType)
   CounterType? _findCounterType(int type) {
     CounterType? counterType;
-    counterTypes.forEach((t) {
-      if (type == t.id) {
-        counterType = t;
+    counterTypes.forEach((counterTypes) {
+      if (type == counterTypes.id) {
+        counterType = counterTypes;
       }
     });
     return counterType;
@@ -201,11 +206,11 @@ class CounterService with ChangeNotifier {
 
   // С бэка приходят типы счетчиков без иконок, заполняем сами
   void _fillIconsAndUnits() {
-    counterTypes.forEach((t) {
-      matchOfTypesIconsAndUnits.entries.forEach((i) {
-        if (t.title.toLowerCase().contains(i.key)) {
-          t.icon = i.value[0];
-          t.color = i.value[1];
+    counterTypes.forEach((counterType) {
+      matchOfTypesIconsAndUnits.entries.forEach((indication) {
+        if (counterType.title.toLowerCase().contains(indication.key)) {
+          counterType.icon = indication.value[0];
+          counterType.color = indication.value[1];
         }
       });
     });

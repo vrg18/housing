@@ -20,7 +20,7 @@ class CounterTypeRepository {
 
   dynamic _counterTypesContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((e) => CounterType.fromJson(e));
+      return (response.data as List<dynamic>).map((counterTypeJson) => CounterType.fromJson(counterTypeJson));
     } else {
       return response.statusMessage;
     }

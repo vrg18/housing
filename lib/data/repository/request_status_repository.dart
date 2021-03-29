@@ -20,7 +20,7 @@ class RequestStatusRepository {
 
   dynamic _requestStatusesContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((e) => RequestStatus.fromJson(e));
+      return (response.data as List<dynamic>).map((requestStatusJson) => RequestStatus.fromJson(requestStatusJson));
     } else {
       return response.statusMessage;
     }

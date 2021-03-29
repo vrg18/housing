@@ -31,11 +31,13 @@ class RequestService with ChangeNotifier {
       dynamic returned = await _requestRepository.getRequests(_currentClient.token!);
       if (returned is Iterable<Request>) {
         requests = List.from(returned);
+        _requestsSort();
       } else {
         return returned;
       }
     }
-    _fillRequestStatuses(requestStatuses);
+    _requestsSort();
+    _fillRequestStatuses();
     isAllLoaded = true;
     notifyListeners();
     return '';
@@ -43,12 +45,14 @@ class RequestService with ChangeNotifier {
 
   // Создать новую заявку
   Future<String> addNewRequest(Request request) async {
-
     requests.add(request);
-    notifyListeners();
 
     if (_currentClient.isDemo) {
       requests[requests.length - 1].id = requests[requests.length - 2].id! + 1;
+      requests[requests.length - 1].status = 0;
+      requests[requests.length - 1].requestStatus = demoStatuses[0];
+      _requestsSort();
+      notifyListeners();
       return '';
     } else {
       dynamic returned = await _requestRepository.postRequest(_currentClient.token!, request);
@@ -57,11 +61,19 @@ class RequestService with ChangeNotifier {
         requests[requests.length - 1].status = returned.status!;
         requests[requests.length - 1].requestStatus = _findRequestStatus(returned.status!);
         requests[requests.length - 1].address.id = returned.address.id;
+        _requestsSort();
+        notifyListeners();
         return '';
       } else {
         return returned;
       }
     }
+  }
+
+  // Почистить флажки при смене клиента
+  void serviceClear() {
+    isAllLoaded = false;
+    _isStatusesLoaded = false;
   }
 
   // Получить список статусов заявок
@@ -82,29 +94,34 @@ class RequestService with ChangeNotifier {
   }
 
   // С бэка приходят только ID статусов заявок, сопоставим с классом RequestStatus...
-  void _fillRequestStatuses(List<RequestStatus> requestStatuses) {
-    requests.forEach((r) => r.requestStatus = _findRequestStatus(r.status!));
+  void _fillRequestStatuses() {
+    requests.forEach((request) => request.requestStatus = _findRequestStatus(request.status!));
   }
 
   // Ищем по статусу заявки (int) статус заявки (RequestStatus)
   RequestStatus? _findRequestStatus(int status) {
-    RequestStatus? requestStatus;
-    requestStatuses.forEach((s) {
-      if (status == s.id) {
-        requestStatus = s;
+    RequestStatus? returnedRequestStatus;
+    requestStatuses.forEach((requestStatus) {
+      if (status == requestStatus.id) {
+        returnedRequestStatus = requestStatus;
       }
     });
-    return requestStatus;
+    return returnedRequestStatus;
   }
 
   // С бэка приходят статусы заявок без цветов, заполняем сами
   void _fillColors() {
-    requestStatuses.forEach((r) {
-      matchOfColors.entries.forEach((c) {
-        if (r.title.toLowerCase().contains(c.key)) {
-          r.color = c.value;
+    requestStatuses.forEach((requestStatus) {
+      matchOfColors.entries.forEach((color) {
+        if (requestStatus.title.toLowerCase().contains(color.key)) {
+          requestStatus.color = color.value;
         }
       });
     });
+  }
+
+  // Сортировать заявки
+  _requestsSort() {
+    requests.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
   }
 }

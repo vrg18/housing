@@ -33,7 +33,7 @@ class CounterHistory extends StatelessWidget {
             const SizedBox(height: 16),
             Flexible(
               child: ListView(
-                children: indications.map((i) => _historyItem(i)).toList(),
+                children: indications.map((indication) => _historyItem(indication)).toList(),
               ),
             ),
           ],

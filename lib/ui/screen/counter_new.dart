@@ -10,8 +10,7 @@ import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/sizes.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/styles.dart';
-import 'package:housing/ui/screen/address_new.dart';
-import 'package:housing/ui/screen/web_wrapper.dart';
+import 'package:housing/ui/widget/add_address_button.dart';
 import 'package:housing/ui/widget/decoration_of_text_field.dart';
 import 'package:housing/ui/widget/top_bar.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +68,7 @@ class _CounterNewState extends State<CounterNew> {
         iconMessage: backTooltipMessage,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(basicBorderSize),
+        padding: const EdgeInsets.only(top: basicBorderSize, left: basicBorderSize, bottom: basicBorderSize),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -80,9 +79,10 @@ class _CounterNewState extends State<CounterNew> {
                 style: inputInAccountStyle,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              SizedBox(
+              const SizedBox(height: basicBorderSize),
+              Container(
                 height: heightOfButtonsAndTextFields,
+                padding: const EdgeInsets.only(right: basicBorderSize),
                 child: TextField(
                   controller: _titleController,
                   focusNode: _titleFocus,
@@ -92,39 +92,37 @@ class _CounterNewState extends State<CounterNew> {
                   onEditingComplete: () => FocusScope.of(context).requestFocus(_typeFocus),
                 ),
               ),
-              const SizedBox(height: 16),
-              _customDropdownButton(typeKey, _typeFocus, counterTypeLabel, context.read<CounterService>().counterTypes),
-              const SizedBox(height: 16),
-              _customDropdownButton(addressKey, _addressFocus, installationAddressLabel, context.watch<CounterService>().addresses),
-              const SizedBox(height: 8),
-              Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  width: 100,
-                  child: ElevatedButton(
-                    child: AutoSizeText(
-                      addAddressLabel,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                    ),
-                    style: blueButtonStyle,
-                    onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => context.read<Web>().isWeb ? WebWrapper(AddressNew()) : AddressNew()))
-                        .then((value) => _gotoSaveAddress(context, value)),
-                  ),
+              const SizedBox(height: basicBorderSize),
+              Padding(
+                padding: const EdgeInsets.only(right: basicBorderSize),
+                child: _customDropdownButton(
+                    typeKey, _typeFocus, counterTypeLabel, context.read<CounterService>().counterTypes),
+              ),
+              const SizedBox(height: basicBorderSize),
+              Padding(
+                padding: EdgeInsets.only(right: context.read<Web>().isWeb ? basicBorderSize : basicBorderSize / 2),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                        child: _customDropdownButton(addressKey, _addressFocus, installationAddressLabel,
+                            context.watch<CounterService>().addresses)),
+                    AddAddressButton(_returnAddAddress),
+                  ],
                 ),
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                child: Text(
-                  saveLabelButton,
-                  style: _isCounterReady ? activeButtonLabelStyle : inactiveButtonLabelStyle,
-                ),
-                onPressed: _isCounterReady ? () => _gotoSaveCounter() : null,
-                style: TextButton.styleFrom(
-                  backgroundColor: _isCounterReady ? null : inactiveBackgroundColor,
+              const SizedBox(height: basicBorderSize),
+              Padding(
+                padding: const EdgeInsets.only(right: basicBorderSize),
+                child: ElevatedButton(
+                  child: Text(
+                    saveLabelButton,
+                    style: _isCounterReady ? activeButtonLabelStyle : inactiveButtonLabelStyle,
+                  ),
+                  onPressed: _isCounterReady ? () => _gotoSaveCounter() : null,
+                  style: TextButton.styleFrom(
+                    backgroundColor: _isCounterReady ? null : inactiveBackgroundColor,
+                  ),
                 ),
               ),
             ],
@@ -136,7 +134,7 @@ class _CounterNewState extends State<CounterNew> {
 
   Widget _customDropdownButton(int selected, FocusNode focus, String label, List<dynamic> items) {
     return SizedBox(
-      height: 60,
+      height: heightOfCustomDropdownButton,
       child: DropdownButtonFormField(
         value: _selectedValues[selected],
         focusNode: focus,
@@ -151,7 +149,7 @@ class _CounterNewState extends State<CounterNew> {
           _selectedValues[selected] = value!;
           _setIsCounterReady();
         },
-        items: items.map((e) => DropdownMenuItem(value: e, child: _dropdownMenuItem(e))).toList(),
+        items: items.map((element) => DropdownMenuItem(value: element, child: _dropdownMenuItem(element))).toList(),
       ),
     );
   }
@@ -173,7 +171,7 @@ class _CounterNewState extends State<CounterNew> {
 
   void _setIsCounterReady() {
     setState(() => _isCounterReady =
-        _titleController.text.isNotEmpty && _selectedValues['type'] != null && _selectedValues['address'] != null);
+        _titleController.text.isNotEmpty && _selectedValues[typeKey] != null && _selectedValues[addressKey] != null);
   }
 
   // Возврат на предыдущий экран с сохранением
@@ -182,9 +180,9 @@ class _CounterNewState extends State<CounterNew> {
         context,
         Counter(
           title: _titleController.text,
-          type: _selectedValues['type'].id,
-          counterType: _selectedValues['type'],
-          address: _selectedValues['address'],
+          type: _selectedValues[typeKey].id,
+          counterType: _selectedValues[typeKey],
+          address: _selectedValues[addressKey],
         ));
   }
 
@@ -193,11 +191,9 @@ class _CounterNewState extends State<CounterNew> {
     Navigator.pop(context, null);
   }
 
-  // Сохранить введенный новый адрес
-  void _gotoSaveAddress(BuildContext context, dynamic value) {
-    if (value != null && value is Address) {
-      context.read<CounterService>().addNewAddress(value);
-      setState(() => _selectedValues[addressKey] = value);
-    }
+  // Колл-бэк из кнопки добавления нового адреса
+  void _returnAddAddress(Address address) {
+    _selectedValues[addressKey] = address;
+    _setIsCounterReady();
   }
 }

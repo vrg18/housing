@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/mocks.dart';
 import 'package:housing/data/service/counter_service.dart';
+import 'package:housing/data/service/request_service.dart';
 import 'package:housing/ui/res/colors.dart';
 import 'package:housing/ui/res/icons.dart';
 import 'package:housing/ui/res/strings.dart';
@@ -75,6 +76,7 @@ class _BottomBarManagerState extends State<BottomBarManager> {
 
   /// Возврат на страницу логина
   void _returnToLogin() {
+    context.read<RequestService>().serviceClear();
     context.read<CounterService>().serviceClear();
     context.read<PhoneNumber>().phoneNumber = '';
     widget.loginController.text = testPhoneNumber;

@@ -30,7 +30,7 @@ class RequestsManager extends StatelessWidget {
                 crossAxisSpacing: basicBorderSize / 2,
                 mainAxisSpacing: basicBorderSize / 2,
                 childAspectRatio: 4,
-                children: context.read<RequestService>().requests.map((r) => RequestCard(r)).toList(),
+                children: context.read<RequestService>().requests.map((request) => RequestCard(request)).toList(),
               ),
             )
           : LoginProgressIndicator(basicBlue),

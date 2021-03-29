@@ -22,42 +22,46 @@ class RequestCard extends StatelessWidget {
       style: counterCardStyle,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                child: Text(
-                  dateFormatter.format(request.createdAt!),
-                  style: cardNameStyle,
-                ),
+              Text(
+                dateFormatter.format(request.createdAt!),
+                style: cardNameStyle,
               ),
-              if (request.requestStatus != null) Flexible(
-                child: Text(
+              if (request.requestStatus != null)
+                Text(
                   request.requestStatus!.title,
                   style: cardNameStyle.merge(
                     TextStyle(color: request.requestStatus!.color),
                   ),
                 ),
-              ),
             ],
           ),
-          _buildCardText(request.subject),
-          _buildCardText(
-              '${request.surname} ${request.name}${request.patronymic != null ? ' ' + request.patronymic! : ''}'),
-          _buildCardText(request.address.toString()),
+          _buildCardText(Icons.announcement, request.subject),
+          _buildCardText(Icons.person, request.toPersonName()),
+          _buildCardText(Icons.location_on, request.address.toString()),
         ],
       ),
     );
   }
 
-  Text _buildCardText(String string) {
-    return Text(
-      string,
-      style: cardTextStyle,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
+  Widget _buildCardText(IconData icon, String string) {
+    return Row(
+      children: [
+        Icon(icon, size: 14, color: Colors.grey[800]),
+        const SizedBox(width: 6),
+        Flexible(
+          child: Text(
+            string,
+            style: cardTextStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }

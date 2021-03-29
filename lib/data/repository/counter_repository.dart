@@ -35,7 +35,7 @@ class CounterRepository {
 
   dynamic _getCountersContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((e) => Counter.fromJson(e));
+      return (response.data as List<dynamic>).map((counterJson) => Counter.fromJson(counterJson));
     } else {
       return response.statusMessage;
     }

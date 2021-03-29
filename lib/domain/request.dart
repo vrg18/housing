@@ -44,6 +44,11 @@ class Request {
     this.requestStatus,
   });
 
+  // Выводим ФИО
+  String toPersonName() {
+    return '$surname $name${patronymic != null ? ' ' + patronymic! : ''}';
+  }
+
   factory Request.fromJson(Map<String, dynamic> json) => _$RequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$RequestToJson(this);

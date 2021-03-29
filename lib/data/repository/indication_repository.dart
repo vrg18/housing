@@ -35,7 +35,7 @@ class IndicationRepository {
 
   dynamic _getIndicationContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((i) => Indication.fromJson(i));
+      return (response.data as List<dynamic>).map((indication) => Indication.fromJson(indication));
     } else {
       return response.statusMessage;
     }

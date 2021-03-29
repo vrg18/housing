@@ -7,6 +7,8 @@ class IndicationRepository {
   final Dio _dio = dioWithOptionsAndLogger;
 
   dynamic getIndicationRequest(String token) async {
+    disableVerificationCertificate(_dio);
+
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
       var response = await _dio.get(apiValues);
@@ -17,6 +19,8 @@ class IndicationRepository {
   }
 
   dynamic postIndicationRequest(String token, Indication indication) async {
+    disableVerificationCertificate(_dio);
+
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
       var response = await _dio.post(

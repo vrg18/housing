@@ -46,8 +46,8 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _checkForLowScreens(BuildContext context, double height, bool isKeyboardVisible) {
-    return tabController.index == 0 && height < contentHeightLoginFirst
-            || tabController.index == 1 && height < contentHeightLoginSecond
+    return tabController.index == 0 && height < contentHeightLoginFirst + (isKeyboardVisible ? keyboardHeight : 0) ||
+            tabController.index == 1 && height < contentHeightLoginSecond + (isKeyboardVisible ? keyboardHeight : 0)
         ? SingleChildScrollView(
             child: _bodyLoginScreen(context),
           )

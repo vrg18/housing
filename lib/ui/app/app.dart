@@ -3,6 +3,7 @@ import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/service/client_service.dart';
 import 'package:housing/data/service/counter_service.dart';
+import 'package:housing/data/service/request_service.dart';
 import 'package:housing/ui/res/strings.dart';
 import 'package:housing/ui/res/theme.dart';
 import 'package:housing/ui/screen/screen_manager.dart';
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
           Provider<ClientService>(create: (_) => ClientService()),
           ChangeNotifierProvider<PhoneNumber>(create: (_) => PhoneNumber()),
           ChangeNotifierProvider<CounterService>(create: (_) => CounterService()),
+          ChangeNotifierProvider<RequestService>(create: (_) => RequestService()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

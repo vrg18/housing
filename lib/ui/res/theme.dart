@@ -9,6 +9,13 @@ final mainTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   primaryColor: Colors.white,
   accentColor: basicBlue,
+  textTheme: TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.grey[900],
+    displayColor: Colors.grey[900],
+  ),
   textSelectionTheme: TextSelectionThemeData(cursorColor: basicBlue),
   inputDecorationTheme: InputDecorationTheme(
     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: basicBlue)),

@@ -18,8 +18,8 @@ class CounterService with ChangeNotifier {
   CounterTypeRepository _counterTypeRepository = CounterTypeRepository();
   AddressRepository _addressRepository = AddressRepository();
   IndicationRepository _indicationRepository = IndicationRepository();
-  bool _isTypeLoaded = false;
-  bool _isAddressLoaded = false;
+  bool _isTypesLoaded = false;
+  bool _isAddressesLoaded = false;
   bool isAllLoaded = false;
   bool isHistoryLoaded = false;
   late Client _currentClient;
@@ -32,12 +32,12 @@ class CounterService with ChangeNotifier {
   Future<String> getCounters(Client client) async {
     _currentClient = client;
 
-    if (!_isTypeLoaded) {
+    if (!_isTypesLoaded) {
       String returnedType = await _getCounterTypes();
       if (returnedType.isNotEmpty) return returnedType;
     }
 
-    if (!_isAddressLoaded) {
+    if (!_isAddressesLoaded) {
       String returnedAddress = await _getAddresses();
       if (returnedAddress.isNotEmpty) return returnedAddress;
     }
@@ -146,8 +146,8 @@ class CounterService with ChangeNotifier {
   void serviceClear() {
     isHistoryLoaded = false;
     isAllLoaded = false;
-    _isTypeLoaded = false;
-    _isAddressLoaded = false;
+    _isTypesLoaded = false;
+    _isAddressesLoaded = false;
   }
 
   // Получить список типов счетчиков
@@ -163,7 +163,7 @@ class CounterService with ChangeNotifier {
       }
     }
     _fillIconsAndUnits();
-    _isTypeLoaded = true;
+    _isTypesLoaded = true;
     return '';
   }
 
@@ -179,7 +179,7 @@ class CounterService with ChangeNotifier {
         return returned;
       }
     }
-    _isAddressLoaded = true;
+    _isAddressesLoaded = true;
     return '';
   }
 

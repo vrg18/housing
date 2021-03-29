@@ -16,9 +16,11 @@ const String apiMeter = '/api/v1/meter/';
 const String apiMeterTypes = '/api/v1/metertypes/';
 const String apiAddress = '/api/v1/address/';
 const String apiValues = '/api/v1/values/';
+const String apiTask = '/api/v1/task/';
+const String apiTaskStatus = '/api/v1/task_status/';
 
 // Dio с опциями и логгером
-final Dio dioWithOptionsAndLogger = Dio(BaseOptions(
+Dio dioWithOptionsAndLogger = Dio(BaseOptions(
   baseUrl: env['BASE_URL']!,
   receiveDataWhenStatusError: true,
   connectTimeout: 5000,
@@ -35,10 +37,19 @@ final Dio dioWithOptionsAndLogger = Dio(BaseOptions(
         maxWidth: 120),
   );
 
-// Соответствия типов счетчиков и иконок
+// Соответствия типов счетчиков и их иконок
 final Map<String, List<dynamic>> matchOfTypesIconsAndUnits = {
   'хол': [waterIcon, basicBlue],
   'гор': [waterIcon, Colors.red],
   'газ': [gasIcon, Colors.lightBlueAccent],
   'электр': [electricityIcon, Colors.yellow[600]],
+};
+
+// Соответствия статусов заявок и из цветов
+final Map<String, Color> matchOfColors = {
+  'нов': Colors.grey[700]!,
+  'прин': Colors.black,
+  'раб': basicBlue,
+  'откл': Colors.red,
+  'полн': Colors.green,
 };

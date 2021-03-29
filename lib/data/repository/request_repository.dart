@@ -1,49 +1,49 @@
 import 'package:dio/dio.dart';
 import 'package:housing/data/repository/utils_repository.dart';
 import 'package:housing/data/res/properties.dart';
-import 'package:housing/domain/counter.dart';
+import 'package:housing/domain/request.dart';
 
-class CounterRepository {
+class RequestRepository {
   final Dio _dio = dioWithOptionsAndLogger;
 
-  dynamic getCountersRequest(String token) async {
+  dynamic getRequests(String token) async {
     disableVerificationCertificate(_dio);
 
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
-      var response = await _dio.get(apiMeter);
-      return _getCountersContinueOk(response);
+      var response = await _dio.get(apiTask);
+      return _getRequestsContinueOk(response);
     } on DioError catch (e) {
       return continueException(e);
     }
   }
 
-  dynamic postCounterRequest(String token, Counter counter) async {
+  dynamic postRequest(String token, Request request) async {
     disableVerificationCertificate(_dio);
 
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
       var response = await _dio.post(
-        apiMeter,
-        data: counter.toJson(),
+        apiTask,
+        data: request.toJson(),
       );
-      return _postCounterContinueOk(response);
+      return _postRequestsContinueOk(response);
     } on DioError catch (e) {
       return continueException(e);
     }
   }
 
-  dynamic _getCountersContinueOk(response) {
+  dynamic _getRequestsContinueOk(response) {
     if (response.statusCode < 300) {
-      return (response.data as List<dynamic>).map((e) => Counter.fromJson(e));
+      return (response.data as List<dynamic>).map((r) => Request.fromJson(r));
     } else {
       return response.statusMessage;
     }
   }
 
-  dynamic _postCounterContinueOk(response) {
+  dynamic _postRequestsContinueOk(response) {
     if (response.statusCode < 300) {
-      return Counter.fromJson(response.data);
+      return Request.fromJson(response.data);
     } else {
       return response.statusMessage;
     }

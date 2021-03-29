@@ -38,10 +38,14 @@ final TextStyle currentReadingsCountersStyle = TextStyle(
   color: Colors.grey[700],
 );
 
-final TextStyle counterNameStyle = TextStyle(
+final TextStyle cardNameStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w600,
   color: Colors.grey[900],
+);
+
+final TextStyle cardTextStyle = TextStyle(
+  color: Colors.grey[800],
 );
 
 final TextStyle basicBlueColorText = TextStyle(
@@ -74,4 +78,4 @@ final ButtonStyle rightSmallerWhiteButtonStyle = bigWhiteButtonStyle.merge(
   ),
 );
 
-final DateFormat dateFormatter = DateFormat('dd/MM/yyyy');
+final DateFormat dateFormatter = DateFormat('dd.MM.yyyy');

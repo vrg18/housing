@@ -15,7 +15,7 @@ import 'package:housing/ui/widget/popup_message.dart';
 import 'package:housing/ui/widget/progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-/// Верхнее бар-меню показаний счетчиков
+/// Основная страница показаний счетчиков
 class CountersManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class CountersManager extends StatelessWidget {
                 crossAxisSpacing: basicBorderSize,
                 mainAxisSpacing: basicBorderSize,
                 childAspectRatio: 2,
-                children: context.read<CounterService>().counters.map((e) => CounterCard(e)).toList(),
+                children: context.read<CounterService>().counters.map((c) => CounterCard(c)).toList(),
               ),
             )
           : LoginProgressIndicator(basicBlue),

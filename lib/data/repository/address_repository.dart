@@ -7,6 +7,8 @@ class AddressRepository {
   final Dio _dio = dioWithOptionsAndLogger;
 
   dynamic getAddressesRequest(String token) async {
+    disableVerificationCertificate(_dio);
+
     _dio.options.headers["Authorization"] = "Bearer $token";
     try {
       var response = await _dio.get(apiAddress);

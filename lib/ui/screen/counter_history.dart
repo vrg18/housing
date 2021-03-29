@@ -54,7 +54,7 @@ class CounterHistory extends StatelessWidget {
               flex: 2,
               child: Text(
                 dateFormatter.format(indication.date!),
-                style: counterNameStyle,
+                style: cardNameStyle,
               ),
             ),
             Spacer(),
@@ -64,7 +64,7 @@ class CounterHistory extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Text(
                   indication.value.toString(),
-                  style: counterNameStyle,
+                  style: cardNameStyle,
                 ),
               ),
             ),

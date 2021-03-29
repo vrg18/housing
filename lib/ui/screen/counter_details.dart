@@ -135,7 +135,7 @@ class _CounterDetailsState extends State<CounterDetails> {
                   TextField(
                     enabled: false,
                     controller: _addressController,
-                    decoration: decorationOfTextField(addressLabel, null, null),
+                    decoration: decorationOfTextField(installationAddressLabel, null, null),
                   ),
                   const SizedBox(height: 16),
                   TextField(

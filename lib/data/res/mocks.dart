@@ -1,12 +1,14 @@
 import 'package:housing/domain/address.dart';
 import 'package:housing/domain/counter.dart';
 import 'package:housing/domain/counter_type.dart';
+import 'package:housing/domain/request.dart';
+import 'package:housing/domain/request_status.dart';
 
 /// Моковые данные для демо-режима
 
 // Тестовый телефон
-//const String testPhoneNumber = '+7962632000';
-const String testPhoneNumber = '';
+const String testPhoneNumber = '+7962632000';
+//const String testPhoneNumber = '';
 
 // Демо-клиент
 const String demoPhoneNumber = '+79999999999';
@@ -69,6 +71,36 @@ final List<Counter> demoCounters = [
     title: 'Электросчетчик на Ленина 17А-73',
     type: 3,
     previousValue: 7183,
+    address: demoAddresses[0],
+  ),
+];
+
+// Статусы заявок
+final List<RequestStatus> demoStatuses = [
+  RequestStatus(
+    id: 0,
+    title: 'Новая',
+  ),
+  RequestStatus(
+    id: 1,
+    title: 'Принята',
+  ),
+  RequestStatus(
+    id: 2,
+    title: 'Выполнена',
+  ),
+];
+
+// Заявки
+final List<Request> demoRequests = [
+  Request(
+    id: 0,
+    text: 'Ремонт батареи',
+    subject: '', 
+    surname: '',
+    name: '',
+    phone: '+79053490432',
+    completedAt: DateTime.parse('2021-03-27'),
     address: demoAddresses[0],
   ),
 ];

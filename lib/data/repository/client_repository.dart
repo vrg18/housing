@@ -7,6 +7,8 @@ class ClientRepository {
   final Dio _dio = dioWithOptionsAndLogger;
 
   dynamic pinCodeRequest(String phone) async {
+    disableVerificationCertificate(_dio);
+
     try {
       var response = await _dio.post(
         apiAuthMobile,
@@ -19,6 +21,8 @@ class ClientRepository {
   }
 
   dynamic authentication(String phone, String password) async {
+    disableVerificationCertificate(_dio);
+
     try {
       var response = await _dio.post(
         apiAuthCustomToken,

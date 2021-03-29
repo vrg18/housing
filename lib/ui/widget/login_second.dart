@@ -99,9 +99,10 @@ class _LoginSecondState extends State<LoginSecond> {
             Flexible(
               child: Container(
                 height: heightOfButtonsAndTextFields,
-                padding: EdgeInsets.only(right: context.read<Web>().isWeb ? 2 : 0), // на небольших экранах в Web-версии
+                padding: EdgeInsets.only(right: context.read<Web>().isWeb ? 2 : 1), // на небольших экранах в Web-версии
+                                                                                    // и в горизонтальном в Android
                                                                                     // пропадал правый край рамки,
-                                                                                    // пришлось сдвинуть на 2
+                                                                                    // пришлось сдвинуть на 2 и 1 соотв.
                 child: Stack(
                   children: [
                     TextField(

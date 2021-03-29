@@ -1,3 +1,7 @@
+/*
+import 'dart:io';
+import 'package:dio/adapter.dart';
+*/
 import 'package:dio/dio.dart';
 
 String? continueException(DioError error) {
@@ -12,4 +16,14 @@ String? continueException(DioError error) {
   } else {
     return error.error;
   }
+}
+
+// Отключение проверки сертификата, для Web не работает
+void disableVerificationCertificate(Dio dio) {
+/*
+  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+    client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return client;
+  };
+*/
 }

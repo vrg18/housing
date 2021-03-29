@@ -40,7 +40,7 @@ class CounterCard extends StatelessWidget {
                   counter.title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
-                  style: counterNameStyle,
+                  style: cardNameStyle,
                 ),
                 Text(
                   counter.previousValue != null

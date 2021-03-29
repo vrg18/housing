@@ -23,11 +23,14 @@ class CounterNew extends StatefulWidget {
 }
 
 class _CounterNewState extends State<CounterNew> {
+  static const int typeKey = 1;
+  static const int addressKey = 2;
+
   late final TextEditingController _titleController;
   late final FocusNode _titleFocus;
   late final FocusNode _typeFocus;
   late final FocusNode _addressFocus;
-  late Map<String, dynamic> _selectedValues;
+  late Map<int, dynamic> _selectedValues;
   late bool _isCounterReady;
 
   @override
@@ -41,8 +44,9 @@ class _CounterNewState extends State<CounterNew> {
     _addressFocus = FocusNode();
     _addressFocus.addListener(() => setState(() {}));
     _selectedValues = {
-      'Type': null,
-      'Address': null,
+      typeKey: null,
+      addressKey:
+          context.read<CounterService>().addresses.length == 1 ? context.read<CounterService>().addresses[0] : null,
     };
     _isCounterReady = false;
   }
@@ -84,14 +88,14 @@ class _CounterNewState extends State<CounterNew> {
                   focusNode: _titleFocus,
                   autofocus: true,
                   decoration: decorationOfTextField(counterNameLabel, _titleFocus, null),
-                  onChanged: (text) => _setIsCounterReady(),
+                  onChanged: (_) => _setIsCounterReady(),
                   onEditingComplete: () => FocusScope.of(context).requestFocus(_typeFocus),
                 ),
               ),
               const SizedBox(height: 16),
-              _customDropdownButton('Type', _typeFocus, counterTypeLabel, context.read<CounterService>().counterTypes),
+              _customDropdownButton(typeKey, _typeFocus, counterTypeLabel, context.read<CounterService>().counterTypes),
               const SizedBox(height: 16),
-              _customDropdownButton('Address', _addressFocus, addressLabel, context.watch<CounterService>().addresses),
+              _customDropdownButton(addressKey, _addressFocus, installationAddressLabel, context.watch<CounterService>().addresses),
               const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
@@ -130,7 +134,7 @@ class _CounterNewState extends State<CounterNew> {
     );
   }
 
-  Widget _customDropdownButton(String selected, FocusNode focus, String label, List<dynamic> items) {
+  Widget _customDropdownButton(int selected, FocusNode focus, String label, List<dynamic> items) {
     return SizedBox(
       height: 60,
       child: DropdownButtonFormField(
@@ -169,7 +173,7 @@ class _CounterNewState extends State<CounterNew> {
 
   void _setIsCounterReady() {
     setState(() => _isCounterReady =
-        _titleController.text.isNotEmpty && _selectedValues['Type'] != null && _selectedValues['Address'] != null);
+        _titleController.text.isNotEmpty && _selectedValues['type'] != null && _selectedValues['address'] != null);
   }
 
   // Возврат на предыдущий экран с сохранением
@@ -178,9 +182,9 @@ class _CounterNewState extends State<CounterNew> {
         context,
         Counter(
           title: _titleController.text,
-          type: _selectedValues['Type'].id,
-          counterType: _selectedValues['Type'],
-          address: _selectedValues['Address'],
+          type: _selectedValues['type'].id,
+          counterType: _selectedValues['type'],
+          address: _selectedValues['address'],
         ));
   }
 
@@ -193,6 +197,7 @@ class _CounterNewState extends State<CounterNew> {
   void _gotoSaveAddress(BuildContext context, dynamic value) {
     if (value != null && value is Address) {
       context.read<CounterService>().addNewAddress(value);
+      setState(() => _selectedValues[addressKey] = value);
     }
   }
 }

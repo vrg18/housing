@@ -14,45 +14,64 @@ import 'package:housing/ui/widget/popup_message.dart';
 import 'package:housing/ui/widget/progress_indicator.dart';
 import 'package:housing/ui/widget/request_card.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// Основная страница заявок
-class RequestsManager extends StatelessWidget {
+class RequestsManager extends StatefulWidget {
+  @override
+  _RequestsManagerState createState() => _RequestsManagerState();
+}
+
+class _RequestsManagerState extends State<RequestsManager> {
+  int? _indexOpenedCard;
+
   @override
   Widget build(BuildContext context) {
     _weReceiveRequests(context);
 
-    return Scaffold(
-      body: context.watch<RequestService>().isAllLoaded
-          ? Padding(
-              padding: const EdgeInsets.all(basicBorderSize),
-              child: GridView.extent(
-                maxCrossAxisExtent: wideScreenSizeOver,
-                crossAxisSpacing: basicBorderSize / 2,
-                mainAxisSpacing: basicBorderSize / 2,
-                childAspectRatio: 4,
-                children: context.read<RequestService>().requests.map((request) => RequestCard(request)).toList(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool wideScreen = constraints.maxWidth > wideScreenSizeOver;
+        return Scaffold(
+          body: context.watch<RequestService>().isAllLoaded
+              ? Padding(
+                  padding: const EdgeInsets.all(basicBorderSize),
+                  child: StaggeredGridView.countBuilder(
+                    itemCount: context.read<RequestService>().requests.length,
+                    crossAxisCount: wideScreen ? 4 : 4,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    itemBuilder: (context, index) => RequestCard(
+                      context.read<RequestService>().requests[index],
+                      index,
+                      _changeIndexOpenedCard,
+                      index == _indexOpenedCard,
+                    ),
+                    staggeredTileBuilder: (_) => StaggeredTile.fit(context.read<RequestService>().requests.length),
+                  ),
+                )
+              : LoginProgressIndicator(basicBlue),
+          floatingActionButton: SizedBox(
+            width: 90,
+            child: ElevatedButton(
+              child: AutoSizeText(
+                newRequestLabel,
+                maxLines: 2,
+                textAlign: TextAlign.center,
               ),
-            )
-          : LoginProgressIndicator(basicBlue),
-      floatingActionButton: SizedBox(
-        width: 90,
-        child: ElevatedButton(
-          child: AutoSizeText(
-            newRequestLabel,
-            maxLines: 2,
-            textAlign: TextAlign.center,
+              style: blueButtonStyle,
+              onPressed: context.watch<RequestService>().isAllLoaded
+                  ? () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => context.read<Web>().isWeb ? WebWrapper(RequestNew()) : RequestNew()))
+                      .then((value) => _gotoSaveRequest(context, value))
+                  : null,
+            ),
           ),
-          style: blueButtonStyle,
-          onPressed: context.watch<RequestService>().isAllLoaded
-              ? () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => context.read<Web>().isWeb ? WebWrapper(RequestNew()) : RequestNew()))
-                  .then((value) => _gotoSaveRequest(context, value))
-              : null,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        );
+      },
     );
   }
 
@@ -72,5 +91,9 @@ class RequestsManager extends StatelessWidget {
         popupMessage(context, error);
       }
     }
+  }
+
+  _changeIndexOpenedCard(int index) {
+    setState(() => _indexOpenedCard = index);
   }
 }

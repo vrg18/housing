@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:housing/data/provider/phone_number.dart';
 import 'package:housing/data/res/mocks.dart';
@@ -26,20 +27,29 @@ class LoginScreen extends StatelessWidget {
             padding: const EdgeInsets.all(basicBorderSize),
             child: _checkForLowScreens(context, height, isKeyboardVisible),
           ),
-          floatingActionButton: isKeyboardVisible || tabController.index != 0
-              ? null
-              : SizedBox(
-                  width: 80,
-                  child: ElevatedButton(
-                    child: AutoSizeText(
-                      demoModePress,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: basicBorderSize),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(env['VERSION']!, style: currentReadingsCountersStyle),
+                if (!isKeyboardVisible && tabController.index == 0)
+                  SizedBox(
+                    width: 80,
+                    child: ElevatedButton(
+                      child: AutoSizeText(
+                        demoModePress,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                      ),
+                      onPressed: () => _gotoDemoNextScreen(context),
                     ),
-                    onPressed: () => _gotoDemoNextScreen(context),
                   ),
-                ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+              ],
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         ),
       ),
     );

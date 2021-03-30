@@ -1,49 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:housing/data/provider/is_web.dart';
 import 'package:housing/domain/request.dart';
 import 'package:housing/ui/res/styles.dart';
-import 'package:housing/ui/screen/request_details.dart';
-import 'package:housing/ui/screen/web_wrapper.dart';
-import 'package:provider/provider.dart';
 
 class RequestCard extends StatelessWidget {
   final Request request;
+  final int index;
+  final Function callBack;
+  final bool isOpened;
 
-  RequestCard(this.request);
+  RequestCard(this.request, this.index, this.callBack, this.isOpened);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  context.read<Web>().isWeb ? WebWrapper(RequestDetails(request)) : RequestDetails(request))),
+      onPressed: () => isOpened ? callBack(null) : callBack(index),
       style: counterCardStyle,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                dateFormatter.format(request.createdAt!),
-                style: cardNameStyle,
-              ),
-              if (request.requestStatus != null)
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Text(
-                  request.requestStatus!.title,
-                  style: cardNameStyle.merge(
-                    TextStyle(color: request.requestStatus!.color),
-                  ),
+                  dateFormatter.format(request.createdAt!),
+                  style: cardNameStyle,
                 ),
-            ],
-          ),
-          _buildCardText(Icons.announcement, request.subject),
-          _buildCardText(Icons.person, request.toPersonName()),
-          _buildCardText(Icons.location_on, request.address.toString()),
-        ],
+                if (request.requestStatus != null)
+                  Text(
+                    request.requestStatus!.title,
+                    style: cardNameStyle.merge(
+                      TextStyle(color: request.requestStatus!.color),
+                    ),
+                  ),
+              ],
+            ),
+            _buildCardText(Icons.announcement, request.subject),
+            if (isOpened) _buildCardText(Icons.location_on, request.address.toString()),
+            if (isOpened) _buildCardText(Icons.person, request.toPersonName()),
+            if (isOpened) _buildCardText(Icons.phone, request.phone),
+            if (isOpened && request.email != null && request.email!.isNotEmpty) _buildCardText(Icons.email, request.email!),
+            if (isOpened) _buildCardText(Icons.text_snippet, request.text),
+          ],
+        ),
       ),
     );
   }
@@ -51,14 +52,12 @@ class RequestCard extends StatelessWidget {
   Widget _buildCardText(IconData icon, String string) {
     return Row(
       children: [
-        Icon(icon, size: 14, color: Colors.grey[800]),
+        Icon(icon, size: 15, color: Colors.grey[800]),
         const SizedBox(width: 6),
         Flexible(
           child: Text(
             string,
             style: cardTextStyle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],

@@ -7,8 +7,8 @@ import 'package:housing/domain/request_status.dart';
 /// Моковые данные для демо-режима
 
 // Тестовый телефон
-const String testPhoneNumber = '+7962632000';
-//const String testPhoneNumber = '';
+//const String testPhoneNumber = '+7962632000';
+const String testPhoneNumber = '';
 
 // Демо-клиент
 const String demoPhoneNumber = '+79999999999';
@@ -128,11 +128,12 @@ final List<Request> demoRequests = [
     id: 2,
     status: 3,
     subject: 'Сделайте что-нибудь с шумными соседями',
-    text: 'Кричат, ругаются, песни поют, в т.ч. по ночам',
+    text: 'Кричат, ругаются, песни поют, на балалайке играют, в т.ч. по ночам',
     surname: 'Шариков',
     name: 'Полиграф',
     patronymic: 'Полиграфович',
     phone: '+79057457454',
+    email: 'sharikov@dog.ru',
     createdAt: DateTime.parse('2021-03-20'),
     address: demoAddresses[0],
   ),

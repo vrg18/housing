@@ -45,6 +45,7 @@ final TextStyle cardNameStyle = TextStyle(
 );
 
 final TextStyle cardTextStyle = TextStyle(
+  fontSize: 15,
   color: Colors.grey[800],
 );
 

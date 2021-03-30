@@ -38,7 +38,9 @@ class _RequestsManagerState extends State<RequestsManager> {
                   padding: const EdgeInsets.all(basicBorderSize),
                   child: StaggeredGridView.countBuilder(
                     itemCount: context.read<RequestService>().requests.length,
-                    crossAxisCount: wideScreen ? 4 : 4,
+                    crossAxisCount: wideScreen
+                        ? context.read<RequestService>().requests.length
+                        : context.read<RequestService>().requests.length,
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
                     itemBuilder: (context, index) => RequestCard(

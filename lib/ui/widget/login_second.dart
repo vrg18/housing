@@ -206,7 +206,7 @@ class _LoginSecondState extends State<LoginSecond> {
                         color: basicBlue,
                         decoration: TextDecoration.underline,
                       ),
-                      recognizer: TapGestureRecognizer()..onTap = () => launch(userAgreementUrl),
+                      recognizer: TapGestureRecognizer()..onTap = () => launch(personalDataPolicyUrl),
                     ),
                   ],
                 ),
